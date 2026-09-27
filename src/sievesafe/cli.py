@@ -58,7 +58,7 @@ def screen(a) -> int:
     out = a.out or a.input.with_name(a.input.stem + "-sievesafe")
     job = run.prepare(a.input, a.title, a.criteria.read_text(encoding="utf-8"), a.mode, out)
     print(f"{len(job.recs)} records ({job.no_abstract} without abstract, {job.duplicates} duplicates), "
-          f"{len(job.recs) - job.duplicates - len(job.todo)} already scored; estimated cost US$ {job.estimate:.3f} (budget US$ {a.budget:.2f})")
+          f"{len(job.recs) - job.duplicates - len(job.todo)} already scored; estimated cost US$ {job.estimate:.4f} (budget US$ {a.budget:.2f})")
     if a.mode == "exclude":
         print("exclude mode: validate locally before relying on it (RAISE) — screen validation-sample and report how many "
               "you would have included", file=sys.stderr)
@@ -70,7 +70,7 @@ def screen(a) -> int:
 
     def progress(done: int, total: int) -> None:
         if done == total or done % 200 == 0:
-            print(f"  scored {done}/{total}", file=sys.stderr)
+            print(f"  {done}/{total} records processed", file=sys.stderr)
 
     res = run.execute(job, jev.api_key(a.key_file) if job.todo else "", a.budget, progress)
     print(f"done: {res['scored']}/{res['total']} scored, {res['below_threshold']} below the safe threshold"

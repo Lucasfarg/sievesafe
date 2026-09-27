@@ -2,15 +2,12 @@
 from __future__ import annotations
 
 import datetime
+from importlib import resources
 
 from sievesafe import MODEL, SAFE_THRESHOLD, __version__
 
-EVIDENCE = ("On the SYNERGY+ benchmark (v3), with the threshold frozen on 20 training reviews before the 23 test reviews "
-            "(33,001 records, 597 included studies) were looked at, records scoring below it contained none of the studies "
-            "finally included in any of the 23 reviews, while 29% of all records fell below it. Recalibrating with each of 43 "
-            "reviews held out in turn kept ≥98% of included studies in every review (100% in 42 of 43). Against human "
-            "title/abstract decisions the threshold is stricter: it kept 96% of records humans passed at that stage (range 78–100%), "
-            "losing only records later excluded at full text.")
+# written by benchmark/results.py from the benchmark, like the numbers in the README
+EVIDENCE = resources.files("sievesafe").joinpath("evidence.txt").read_text(encoding="utf-8").strip()
 
 
 def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_scored: int, n_excluded: int,

@@ -21,7 +21,7 @@ version = { attr = "sievesafe.__version__" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-sievesafe = ["page.html"]
+sievesafe = ["page.html", "evidence.txt"]
 
 [tool.ruff]
 line-length = 165
