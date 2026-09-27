@@ -62,6 +62,11 @@ class WithData(unittest.TestCase):
         r = self.run_script("calibrate.py", "--as-frozen")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
+    @unittest.skipUnless((BENCH / "external/data/reviews.json").exists(), "CLEF TAR data not built (external/clef_fetch.py)")
+    def test_external_results_md_is_what_the_answers_give(self):
+        r = self.run_script("external/evaluate.py", "--check")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+
     def test_results_md_is_what_the_data_and_answers_give(self):
         r = self.run_script("results.py", "--check")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
