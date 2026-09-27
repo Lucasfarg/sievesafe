@@ -99,8 +99,8 @@ class Serve(unittest.TestCase):
         self.assertIn("RAISE", err["error"])
         status, est = self.upload(mode="exclude", validated=True)
         job = self.finish(est["id"])
-        self.assertEqual((job["summary"]["excluded"], job["summary"]["files"][2]), (2, "excluded.ris"))
-        self.assertEqual(len(records.read_ris(self.request("GET", f"/api/runs/{est['id']}/files/excluded.ris")[2].decode())), 2)
+        self.assertEqual((job["summary"]["excluded"], job["summary"]["files"][2:4]), (1, ["excluded.ris", "validation-sample.ris"]))
+        self.assertEqual(len(records.read_ris(self.request("GET", f"/api/runs/{est['id']}/files/excluded.ris")[2].decode())), 1)
 
     def test_budget_limits_and_one_start_per_run(self):
         _, est = self.upload()

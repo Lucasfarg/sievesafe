@@ -14,7 +14,7 @@ EVIDENCE = ("On the SYNERGY+ benchmark (v3), with the threshold frozen on 20 tra
 
 
 def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_scored: int, n_excluded: int,
-          n_low: int, spent: float) -> str:
+          n_low: int, spent: float, n_no_abstract: int = 0, n_duplicates: int = 0, n_sample: int = 0) -> str:
     today = datetime.datetime.now(datetime.UTC).astimezone().date().isoformat()
     lines = [
         f"# sievesafe report — {title}",
@@ -25,6 +25,8 @@ def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_
         f"- Mode: **{mode}** — " + ("records below the threshold were removed before human screening."
                                     if mode == "exclude" else "nothing was removed; records are ordered by probability and low ones flagged."),
         f"- Below the threshold: {n_low} records ({n_low / max(n_total, 1):.0%})" + (f" — **{n_excluded} excluded by automation**" if mode == "exclude" else ""),
+        f"- Without an abstract: {n_no_abstract} records — never flagged or excluded (the threshold was validated on records with abstracts)",
+        f"- Duplicates (same DOI or title as another record): {n_duplicates} — each study scored once; every copy kept in the files",
         f"- Cost: US$ {spent:.4f}",
         "",
         "## PRISMA 2020 flow diagram",
@@ -37,7 +39,8 @@ def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_
         (f"Title and abstract screening was supported by sievesafe {__version__} (model {MODEL}), which estimates for each record "
          f"the probability that it should proceed to full-text review given the review's eligibility criteria, without training "
          f"on labelled records. " + (f"Records with a probability below the pre-specified threshold of {SAFE_THRESHOLD} "
-                                     f"({n_excluded} of {n_total}) were excluded by automation; all remaining records were "
+                                     f"({n_excluded} of {n_total}) were excluded by automation, except records without an abstract, "
+                                     f"which were always kept; all remaining records were "
                                      f"screened by two independent reviewers." if mode == "exclude" else
                                      "Records were presented to reviewers in descending order of probability; "
                                      "all records were screened by two independent reviewers.")),
@@ -47,7 +50,8 @@ def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_
         EVIDENCE,
         "",
         ("Local validation is recommended before relying on automated exclusion (RAISE): screen a random sample of the records "
-         "below the threshold and report how many would have been included."),
+         "below the threshold and report how many would have been included."
+         + (f" `validation-sample` holds {n_sample} records drawn at random (seed 0) from the excluded ones for this." if n_sample else "")),
         "",
         "## Eligibility criteria given to the tool",
         "",

@@ -26,7 +26,7 @@ from sievesafe import MODEL, SAFE_THRESHOLD, __version__, jev, run
 
 MAX_UPLOAD = 60 * 1024 * 1024
 CONTENT_TYPES = {".csv": "text/csv", ".tsv": "text/tab-separated-values", ".ris": "application/x-research-info-systems",
-                 ".txt": "text/plain", ".md": "text/markdown"}
+                 ".txt": "text/plain", ".nbib": "text/plain", ".md": "text/markdown"}
 
 
 class Server(ThreadingHTTPServer):
@@ -125,8 +125,8 @@ class Handler(BaseHTTPRequestHandler):
     def create(self, body: dict) -> None:
         name = Path(str(body.get("filename") or "")).name
         stem, suffix = Path(name).stem, Path(name).suffix.lower()
-        if suffix not in (".ris", ".txt", ".csv", ".tsv"):
-            return self.json(400, {"error": "choose a .ris or .csv export from your search"})
+        if suffix not in (".ris", ".txt", ".nbib", ".csv", ".tsv"):
+            return self.json(400, {"error": "choose a .ris, .nbib, .txt or .csv export from your search"})
         try:
             data = base64.b64decode(str(body.get("data") or ""), validate=True)
         except (binascii.Error, ValueError):
@@ -187,7 +187,7 @@ def work(job: dict, key: str, budget: float) -> None:
 def public(job: dict) -> dict:
     r = job["run"]
     return {"id": job["id"], "state": job["state"], "done": job["done"], "total": job["total"], "error": job["error"],
-            "summary": job["summary"], "records": len(r.recs), "no_abstract": r.no_abstract, "cached": len(r.recs) - len(r.todo),
+            "summary": job["summary"], "records": len(r.recs), "no_abstract": r.no_abstract, "duplicates": r.duplicates, "cached": len(r.recs) - len(r.todo),
             "estimate": r.estimate, "mode": r.mode, "format": r.fmt}
 
 

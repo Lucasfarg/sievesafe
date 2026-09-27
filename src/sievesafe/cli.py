@@ -10,8 +10,11 @@
   --yes             do not ask before spending
   --key-file PATH   file with TYPESAFE_API_KEY=... (default: $TYPESAFE_API_KEY or ~/.config/sievesafe/typesafe.env)
 
-Outputs: ranked.csv (rank, probability, flag, title), to-screen.<ris|csv> (ordered, original records untouched),
-excluded.<ris|csv> in exclude mode, and report.md (PRISMA count, methods paragraph, validation evidence)."""
+Inputs: RIS (.ris/.txt), PubMed/MEDLINE (.nbib/.txt), Web of Science plain text (.txt), CSV/TSV (, or ; any encoding).
+Outputs, in the input's format: ranked.csv (rank, record, probability, flag, duplicate_of, title); to-screen.<ext> (ordered,
+original records untouched); in exclude mode excluded.<ext> and validation-sample.<ext> (50 random excluded records to
+screen for local validation); report.md (PRISMA count, methods paragraph, validation evidence).
+Records without an abstract are never flagged or excluded; duplicates (same DOI or title) are scored once, all kept."""
 from __future__ import annotations
 
 import argparse
@@ -54,8 +57,11 @@ def main(argv: list[str] | None = None) -> int:
 def screen(a) -> int:
     out = a.out or a.input.with_name(a.input.stem + "-sievesafe")
     job = run.prepare(a.input, a.title, a.criteria.read_text(encoding="utf-8"), a.mode, out)
-    print(f"{len(job.recs)} records ({job.no_abstract} without abstract), {len(job.recs) - len(job.todo)} already scored; "
-          f"estimated cost US$ {job.estimate:.3f} (budget US$ {a.budget:.2f})")
+    print(f"{len(job.recs)} records ({job.no_abstract} without abstract, {job.duplicates} duplicates), "
+          f"{len(job.recs) - job.duplicates - len(job.todo)} already scored; estimated cost US$ {job.estimate:.3f} (budget US$ {a.budget:.2f})")
+    if a.mode == "exclude":
+        print("exclude mode: validate locally before relying on it (RAISE) — screen validation-sample and report how many "
+              "you would have included", file=sys.stderr)
     if job.todo and not a.yes:
         if not sys.stdin.isatty():
             raise ValueError("refusing to spend without --yes when not run from a terminal")

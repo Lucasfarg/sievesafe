@@ -41,15 +41,15 @@ class Records(unittest.TestCase):
         self.assertEqual(recs[2].abstract, "")
         with tempfile.TemporaryDirectory() as d:
             out = Path(d) / "x.ris"
-            records.write(out, "ris", recs)
+            records.write(out, records.Export("ris", ".ris"), recs)
             self.assertEqual([r.title for r in records.read_ris(out.read_text())], [r.title for r in recs])
 
     def test_csv_finds_columns_case_insensitively(self):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "s.csv"
             p.write_text("Title,Abstract,Year\nA,aa,2020\nB,,2021\n", encoding="utf-8")
-            fmt, recs = records.read(p)
-            self.assertEqual((fmt, [r.title for r in recs], recs[1].abstract), ("csv", ["A", "B"], ""))
+            export, recs = records.read(p)
+            self.assertEqual((export.fmt, [r.title for r in recs], recs[1].abstract), ("csv", ["A", "B"], ""))
 
     def test_csv_without_title_is_refused(self):
         with tempfile.TemporaryDirectory() as d:
@@ -74,7 +74,7 @@ class Screen(unittest.TestCase):
             out = d / "search-sievesafe"
             ranked = list(csv.DictReader((out / "ranked.csv").open()))
             self.assertEqual(ranked[0]["title"], "Emicizumab pharmacokinetics in children")
-            self.assertEqual(sum(r["flag"] == "below safe threshold" for r in ranked), 2)
+            self.assertEqual([r["flag"] for r in ranked], ["", "below safe threshold", "no abstract, kept"])
             self.assertEqual(len(records.read_ris((out / "to-screen.ris").read_text())), 3)
             self.assertFalse((out / "excluded.ris").exists())
             self.assertIn("No records were marked as ineligible", (out / "report.md").read_text())
@@ -84,9 +84,10 @@ class Screen(unittest.TestCase):
             d = Path(d)
             self.run_cli(d, "--mode", "exclude")
             out = d / "search-sievesafe"
-            self.assertEqual(len(records.read_ris((out / "to-screen.ris").read_text())), 1)
-            self.assertEqual(len(records.read_ris((out / "excluded.ris").read_text())), 2)
-            self.assertIn("Records marked as ineligible by automation tools: **2**", (out / "report.md").read_text())
+            self.assertEqual(len(records.read_ris((out / "to-screen.ris").read_text())), 2)  # the record without abstract stays
+            self.assertEqual([r.title for r in records.read_ris((out / "excluded.ris").read_text())], ["A survey of cooking habits"])
+            self.assertEqual(len(records.read_ris((out / "validation-sample.ris").read_text())), 1)
+            self.assertIn("Records marked as ineligible by automation tools: **1**", (out / "report.md").read_text())
 
     def test_rerun_uses_the_cache(self, _key, ask):
         with tempfile.TemporaryDirectory() as d:

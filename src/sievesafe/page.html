@@ -50,8 +50,8 @@
 
   <section aria-labelledby="s1">
     <h2 id="s1">1. Your search and your criteria</h2>
-    <label for="file">Search export <span class="hint">— RIS (.ris, .txt) or CSV (.csv, .tsv) from PubMed, Scopus, Web of Science, Rayyan…</span></label>
-    <input id="file" type="file" accept=".ris,.txt,.csv,.tsv">
+    <label for="file">Search export <span class="hint">— RIS, PubMed (.nbib), Web of Science (.txt) or CSV, from any database or Rayyan</span></label>
+    <input id="file" type="file" accept=".ris,.txt,.nbib,.csv,.tsv">
     <label for="title">Review title</label>
     <input id="title" type="text" autocomplete="off" placeholder="e.g. Emicizumab prophylaxis in children with haemophilia A">
     <label for="criteria">Eligibility criteria <span class="hint">— paste the inclusion and exclusion criteria from your protocol</span></label>
@@ -77,6 +77,7 @@
     <dl>
       <dt>Records</dt><dd id="n"></dd>
       <dt>Without abstract</dt><dd id="noabs"></dd>
+      <dt>Duplicates</dt><dd id="dups"></dd>
       <dt>Already scored</dt><dd id="cached"></dd>
       <dt>Estimated cost</dt><dd id="cost"></dd>
     </dl>
@@ -136,7 +137,8 @@ $("estimate").addEventListener("click", async () => {
   try {
     const d = await api("/api/runs", { filename: file.name, data: await readFile(file), title: $("title").value, criteria: $("criteria").value, mode: mode(), validated: $("ack").checked });
     runId = d.id;
-    $("n").textContent = d.records.toLocaleString(); $("noabs").textContent = d.no_abstract.toLocaleString();
+    $("n").textContent = d.records.toLocaleString(); $("noabs").textContent = d.no_abstract.toLocaleString() + (d.no_abstract ? " — ranked, but never flagged or removed" : "");
+    $("dups").textContent = d.duplicates.toLocaleString() + (d.duplicates ? " — each study scored once, every copy kept" : "");
     $("cached").textContent = d.cached.toLocaleString(); $("cost").textContent = usd(d.estimate);
     const suggested = Math.min(d.max_budget, Math.max(0.01, Math.ceil(d.estimate * 150) / 100));
     $("budget").value = suggested.toFixed(2); $("budget").max = d.max_budget;
@@ -175,7 +177,8 @@ async function poll() {
     const a = Object.assign(document.createElement("a"), { textContent: name, href: "#" });
     a.addEventListener("click", (ev) => { ev.preventDefault(); download(name); });
     const li = document.createElement("li");
-    li.append(a, " — " + (labels[name] || (name.startsWith("to-screen") ? "records for human screening, most likely first" : "removed records, for local validation")));
+    li.append(a, " — " + (labels[name] || (name.startsWith("to-screen") ? "records for human screening, most likely first" : name.startsWith("validation-sample")
+      ? "random sample of the removed records: screen these to validate locally" : "removed records")));
     $("files").append(li);
   }
 }

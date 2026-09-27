@@ -1,0 +1,26 @@
+FN Clarivate Analytics Web of Science
+VR 1.0
+PT J
+AU Lima, F
+   Souza, G
+AF Lima, Fernanda
+   Souza, Gabriel
+TI Long-term safety of emicizumab in adults with haemophilia A and
+   inhibitors
+SO FICTIONAL JOURNAL OF THROMBOSIS
+AB Adults with inhibitors (n = 85) received weekly emicizumab for three years. No thrombotic events occurred.
+DI 10.9999/fict.2020.020
+PY 2020
+UT WOS:000000000000001
+ER
+
+PT J
+AU Alves, H
+TI Soil microbiome in tropical forests
+SO FICTIONAL ECOLOGY
+AB We sequenced soil samples from 12 forest plots.
+PY 2018
+UT WOS:000000000000002
+ER
+
+EF
