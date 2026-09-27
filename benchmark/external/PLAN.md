@@ -36,3 +36,12 @@ review falls below 98%; in that case the threshold is not changed on this set, a
 
 Secondary: the same at 0.08 (corrected SYNERGY+ calibration), 0.17 and 0.26; recall of title/abstract includes;
 recall from the score alone (without the no-abstract rule); weighted WSS@95 and WSS@100; AUC.
+
+## Second condition: weak criteria (added after the first condition's results, before any call for this one)
+
+Question: does the safe threshold still hold when the user gives only a one-paragraph aim instead of full eligibility
+criteria? Same reviews and model; the criteria are the OBJECTIVES section alone (`external/clef.py`, condition
+`objectives`). Records: every include at either level plus the first 300 other records of the same seeded sample, so
+every record here was also scored with full criteria. Answers in `benchmark/answers/clefobj-*`; hard budget US$ 0.40
+(estimate US$ 0.28). Same primary endpoints and the same verdict rule at 0.06: a failure if any review with a final
+include keeps less than 98% of them. Also reported: the paired change against full criteria on the same records.
