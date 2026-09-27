@@ -15,7 +15,7 @@ CONDITIONS = {
     "dta1718": {"variant": "clef1718", "task": "dta1718", "criteria": "objectives and selection criteria", "others": None, "keep": "final"},
 }
 TASKS = {"intervention": ("Intervention", "Intervention", DATA), "dta": ("DTA", "diagnostic test accuracy", DATA / "dta"),
-         "dta1718": ("", "2017–2018 topics, mostly diagnostic test accuracy", DATA / "dta1718")}  # CLEF dir, label, data dir
+         "dta1718": ("", "2017–2018 topics", DATA / "dta1718")}  # CLEF dir, label, data dir
 
 
 def data_dir(condition: str) -> Path:

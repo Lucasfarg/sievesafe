@@ -1,0 +1,11 @@
+{
+ "set": "2017\u20132018 topics (40 reviews)",
+ "criteria": "objectives and selection criteria",
+ "reviews": 40,
+ "reviews_with_includes": 39,
+ "reviews_keeping_all": 38,
+ "includes": 849,
+ "includes_kept": 848,
+ "records_below": 0.4927,
+ "upper_bound_reviews_losing": 0.116
+}

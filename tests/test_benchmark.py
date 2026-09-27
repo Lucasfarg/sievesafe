@@ -64,7 +64,7 @@ class WithData(unittest.TestCase):
 
     @unittest.skipUnless((BENCH / "external/data/reviews.json").exists(), "CLEF TAR data not built (external/clef_fetch.py)")
     def test_external_results_md_is_what_the_answers_give(self):
-        for extra in ([], ["--condition", "objectives"], ["--condition", "dta"]):
+        for extra in ([], ["--condition", "objectives"], ["--condition", "dta"], ["--condition", "dta1718"]):
             r = self.run_script("external/evaluate.py", "--check", *extra)
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
 
