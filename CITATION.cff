@@ -15,6 +15,14 @@ version: 0.1.0
 repository-code: "https://github.com/Lucasfarg/sievesafe"
 url: "https://github.com/Lucasfarg/sievesafe"
 license: AGPL-3.0-or-later
+doi: 10.5281/zenodo.22992077
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22992077
+    description: "All versions (concept DOI)"
+  - type: doi
+    value: 10.5281/zenodo.22992078
+    description: "Version 0.1.0"
 keywords:
   - systematic review
   - title and abstract screening

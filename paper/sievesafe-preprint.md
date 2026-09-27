@@ -323,7 +323,7 @@ for the model calls.
 
 SYNERGY+ v3: DataverseNL, doi:10.34894/DDCVCV (CC0 1.0). CLEF TAR: github.com/CLEF-TAR/tar (commit dbc13d0, MIT
 licence). The repository redistributes only record identifiers, model probabilities and token counts, not record text. Code, model answers,
-the frozen calibration and the generated tables: https://github.com/Lucasfarg/sievesafe [[release tag and archive DOI]], AGPL-3.0-or-later.
+the frozen calibration and the generated tables: https://github.com/Lucasfarg/sievesafe, release v0.1.0, archived at Zenodo (doi:10.5281/zenodo.22992078), AGPL-3.0-or-later.
 
 ## Competing interests
 

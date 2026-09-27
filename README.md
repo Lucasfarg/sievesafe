@@ -1,6 +1,7 @@
 # sievesafe
 
 [![tests](https://github.com/Lucasfarg/sievesafe/actions/workflows/tests.yml/badge.svg)](https://github.com/Lucasfarg/sievesafe/actions/workflows/tests.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22992077.svg)](https://doi.org/10.5281/zenodo.22992077)
 [![License: AGPL v3+](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
 [![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)](pyproject.toml)
@@ -155,7 +156,8 @@ threshold was set on 20 calibration reviews so that all of their included studie
 
 ## How to cite
 
-Please cite the software using [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository" button turns it into APA
+Please cite the software as archived on Zenodo, [doi:10.5281/zenodo.22992077](https://doi.org/10.5281/zenodo.22992077)
+(all versions; each release also has its own DOI), or use [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository" button turns it into APA
 or BibTeX. A preprint describing the benchmark is on its way, and this section will link to it once it is posted.
 
 ## Help and contributing
