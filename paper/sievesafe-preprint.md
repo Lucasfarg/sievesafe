@@ -32,7 +32,7 @@ against 0.723 for ASReview started with one labelled record of each class; at 10
 2019 reviews with included studies, none of the 510 intervention or 250 diagnostic studies fell below the threshold,
 with 52% and 45% of records below it; with objectives alone there were again no losses, and 34% of records fell below.
 In the 2017–2018 half, 848 of 849 included studies were kept (49% of records below). That set failed its pre-specified rule; the one study
-lost may be a labelling error, which we could not confirm.
+lost is not cited by its review, which cites the other 48 included studies, so it is probably a labelling error.
 
 **Conclusions.** A threshold fixed in advance on a zero-shot probability carried over to 23 unseen SYNERGY+ reviews and
 to three of four pre-specified CLEF TAR sets; the fourth failed its rule by one included study out of 849. Across 88
@@ -243,8 +243,9 @@ and a random half of the 2017–2018 reviews (39 with a final include, 849 final
 The three CLEF 2019 sets met the pre-specified rule and the 2017–2018 half did not. In that set, the review *Blood CEA
 levels for detecting recurrent colorectal cancer* (CD011134) kept 48 of its 49 final includes, which rounds to 98.0% but
 is 97.96%, just under the 98% floor. The record it lost (PMID 16649724, score 0.02) is a study of NT-proBNP in
-hypertrophic cardiomyopathy and may be a wrong identifier in the CLEF labels. We did not check it against the
-review's reference list, and we report the set as a failure, as planned.
+hypertrophic cardiomyopathy and is not among the 258 references of the review, which cites the other 48 final includes
+(`benchmark/external/label-check.md`), so the label was most likely attached to the wrong identifier. We still report
+the set as a failure, as planned.
 
 With full criteria on the 2019 intervention reviews, the corrected SYNERGY+ threshold (0.08) would have lost included
 studies in 2 of 18 reviews (lowest 97%). On the 6,237 records scored under both sets of criteria, the scores correlated
@@ -273,14 +274,15 @@ and the way results are averaged differ.
 
 We see the external validation as the stronger evidence. The reviews, the wording of the criteria and the records all
 came from a different source, and the success rule was written down before any record was scored. Of the 65 CLEF
-reviews with included studies, one lost a study, which may be mislabelled. The objectives-only
+reviews with included studies, one lost a study, and the review itself does not cite that study. The objectives-only
 condition also suggests how the method behaves with vaguer criteria: the model became more permissive and flagged fewer
 records, but it did not start missing included studies. In this single comparison, fuller criteria mainly increased the share of records flagged.
 
 ## Limitations
 
 - **Two collections and one failure.** We tested 23 SYNERGY+ reviews and 65 CLEF TAR reviews with included studies. One
-  CLEF review lost one included study, possibly because of a labelling error that we did not confirm. Per set, the 95% upper bound on the share
+  CLEF review lost one included study, which the review's own reference list does not cite, so it is probably a
+  labelling error. Per set, the 95% upper bound on the share
   of reviews that could lose an included study is between 12% and 31%, and only half of the CLEF 2017–2018 topics were
   used. The criteria came from published reviews; the objectives-only condition is a single test of vaguer criteria,
   and a prospective study is still needed.

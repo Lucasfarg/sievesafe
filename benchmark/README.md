@@ -17,6 +17,7 @@ by scripts, and none of their numbers is typed by hand.
 | `results.md` | the SYNERGY+ tables: calibration, test split, leave-one-review-out, title/abstract labels, ASReview, stopping rules, stability, cost |
 | `external/PLAN.md` | the pre-specified plans for the CLEF TAR tests, each committed before its first model call |
 | `external/results*.md` | the CLEF TAR results, one file per condition |
+| `external/label-check.md` | the one lost include checked against its review's reference list (`label_check.py`) |
 
 The answer files hold OpenAlex or PubMed ids, probabilities and token counts, and no titles or abstracts. The records
 themselves are not redistributed here (SYNERGY+ abstracts may not be republished as plain text), so the first step

@@ -27,8 +27,9 @@ Zotero, together with a report that gives the PRISMA 2020 count and a draft meth
 The safe threshold was set on 20 reviews and then tested, without any change, on 23 other reviews and on Cochrane
 reviews from a second collection, CLEF TAR. Across all of them it lost one finally included study, in one review,
 while a large share of the records fell below it. That record is a cardiology paper listed as included in a review about
-colorectal cancer; it may be a labelling mistake, but we did not confirm it, and that CLEF set failed the rule we had
-fixed for it. In the benchmarks, the records it removed rarely contained a study that ended up in the review.
+colorectal cancer, and the review itself does not cite it, while it cites the other 48 included studies
+([`label-check.md`](benchmark/external/label-check.md)). So it is probably a labelling mistake, but that CLEF set still
+failed the rule we had fixed for it. In the benchmarks, the records it removed rarely contained a study that ended up in the review.
 
 It does not promise to match human title and abstract screening. Some records that human screeners sent on to full
 text do fall below the threshold. In the benchmark all of them were later excluded at full text, but a benchmark is not
