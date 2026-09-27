@@ -1,0 +1,46 @@
+{
+ "variant": "c1",
+ "frozen_at": "2026-09-27T00:29:09-03:00",
+ "answers_sha256": "d08b1f0012e2db6f747b2d10a9795a75bddca5b2308043667d4e62db83382226",
+ "train_reviews": [
+  "Bakker-Jacobs_2022",
+  "Burska_2023",
+  "Cozim-Melges_2024",
+  "Filges_2018",
+  "Hamaker_2022",
+  "Hanlon_2022",
+  "Kerschbaumer_2022",
+  "Lauper_2021",
+  "Mejean_2024",
+  "Muthu_2020",
+  "Noetel_2021",
+  "Oud_2018",
+  "Ruggeri_2019",
+  "Sanchez-Acedo_2023",
+  "Sanchez-Gomez_2024",
+  "Santos_2018",
+  "Sepriano_2022",
+  "Viguie_2020",
+  "Zinsser_2022",
+  "van_der_Valk_2021"
+ ],
+ "records": 12982,
+ "includes": 818,
+ "targets": {
+  "95%": {
+   "threshold": 0.26,
+   "train_recall": 0.9535452322738386,
+   "train_auto_excluded": 0.7253302830844985
+  },
+  "98%": {
+   "threshold": 0.17,
+   "train_recall": 0.9828850855745721,
+   "train_auto_excluded": 0.6066317056401839
+  },
+  "100%": {
+   "threshold": 0.06,
+   "train_recall": 1.0,
+   "train_auto_excluded": 0.2234158127751471
+  }
+ }
+}

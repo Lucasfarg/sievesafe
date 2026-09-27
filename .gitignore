@@ -6,3 +6,7 @@ __pycache__/
 .sievesafe-cache/
 dist/
 build/
+benchmark/data
+benchmark/.asreview/
+benchmark/.venv-asreview/
+benchmark/answers/*.jsonl

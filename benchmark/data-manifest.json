@@ -1,0 +1,572 @@
+{
+ "Abgaz_2023": {
+  "includes": 11,
+  "n": 288,
+  "sha256": "6d6d63eb2948e900272f943caa0a8f8ac0dbbe50931d5086266f22e91bafcbc4"
+ },
+ "Adamo_2021": {
+  "includes": 16,
+  "n": 1151,
+  "sha256": "f318767c98e7eec4d991b67402b7b6bcb91625d8b61f27362fa9260ed254294d"
+ },
+ "Ali_2024": {
+  "includes": 30,
+  "n": 515,
+  "sha256": "0b7979c252b9296c244e15f459bb8fa9a0b3d3961776a91dc3150a3d8799c36d"
+ },
+ "Anmarkrud_2021": {
+  "includes": 16,
+  "n": 593,
+  "sha256": "b5ab3757ccb35c9c03b41fbc0a74207ef137bdeeab11c77713d9db8f74a233d0"
+ },
+ "Aouad_2024": {
+  "includes": 30,
+  "n": 714,
+  "sha256": "43fff3991548f99ed3f85458806bd5f714adcc753605bd6e5aad7c503cb52be2"
+ },
+ "Appenzeller-Herzog_2019": {
+  "includes": 8,
+  "n": 582,
+  "sha256": "59b2078c0fbec2c8f14d95450148e253de5c9c568ff655dd212ac87c0785125f"
+ },
+ "Attai_2022": {
+  "includes": 135,
+  "n": 1726,
+  "sha256": "997ce553548f652667e7bc4f44cfc6f9d3b21a3209cd3aa36439ae5f2ff6b7e1"
+ },
+ "Bakker-Jacobs_2022": {
+  "includes": 8,
+  "n": 549,
+  "sha256": "8eeacea363b481a657afb369b331eb398e5aa7d222c44bf5ed87dda7fdb82529"
+ },
+ "Bech_2019": {
+  "includes": 15,
+  "n": 556,
+  "sha256": "ec0e1b27f937f138054c5f962861df5a7984704c321bc30c8c8cb6ed706fa851"
+ },
+ "Bindoli_2024a": {
+  "includes": 64,
+  "n": 1449,
+  "sha256": "ae230b3a981cb53c0469e5caed42f16e88ed1b13cea361a150b1d06992b6a8e2"
+ },
+ "Bindoli_2024b": {
+  "includes": 7,
+  "n": 341,
+  "sha256": "45e0460f6027f69087cc947b1aea6926eb8b583add68da3b9083bae703f0ba12"
+ },
+ "Boersma-van_Dam_2024": {
+  "includes": 24,
+  "n": 578,
+  "sha256": "1732747a36c341717f01a2647f900029ff6540fd6edb1e20cc55be93e502df11"
+ },
+ "Bos_2018": {
+  "includes": 6,
+  "n": 2241,
+  "sha256": "56b12d350131d045faf3466925c6d7c01717eb395817d64e42d5f32beb88b6ac"
+ },
+ "Bosch_2021": {
+  "includes": 22,
+  "n": 1716,
+  "sha256": "0f7c22ebb7423ee30106e9b857094712d27e010ef1c49561ad378b5dabf1d0bc"
+ },
+ "Bosch_2023": {
+  "includes": 19,
+  "n": 2341,
+  "sha256": "aafa1fec838114127559ae090bb9c30d99b144596b6fce213278be798da0ae76"
+ },
+ "Brons_2024": {
+  "includes": 25,
+  "n": 172,
+  "sha256": "b70e82e180bb6f43c26b4c4ccf4de1b85eb41e4a4a78faf7d475beb9e7cdcf28"
+ },
+ "Brouwer_2019": {
+  "includes": 14,
+  "n": 11440,
+  "sha256": "1fc00fbc8fb8846235911ff18bbae76b65ef64d5667c3ed46fa09bf5418c403e"
+ },
+ "Burska_2023": {
+  "includes": 158,
+  "n": 3247,
+  "sha256": "99fabb66785f01078da22f7ff2b54f8e9a02b77c6a8dce4cd6b9bcd54328e084"
+ },
+ "Butink_2023": {
+  "includes": 30,
+  "n": 3090,
+  "sha256": "84892858677dc527b329e30dff05374c05878df370b71e2459c1ef9e131e5c8c"
+ },
+ "Chakraborty_2023": {
+  "includes": 7,
+  "n": 2233,
+  "sha256": "c47d0f8f7ec71c189117dda585e49f35c4ce5483ebc3e13109710966dceee25b"
+ },
+ "Chueca_2023": {
+  "includes": 16,
+  "n": 609,
+  "sha256": "df2d973b93dc74a993d0dd03e5d016832a68d897f33ebb1ce92e528cad388b20"
+ },
+ "Cinquin_2018": {
+  "includes": 9,
+  "n": 290,
+  "sha256": "ab2a68568673f831b129104410a2f8ee7663f1fd3b9e59fb167990ed176cd643"
+ },
+ "Clarinval_2021": {
+  "includes": 19,
+  "n": 446,
+  "sha256": "84b879c4685a0a395f7a5aadecbf7c01ac703a3c6210f6929dd46a0f758bc65b"
+ },
+ "Clark_2021": {
+  "includes": 3,
+  "n": 199,
+  "sha256": "1e4b3f96956574173c3649eed594770a3bfdf362901d468403094aa50684b540"
+ },
+ "Cozim-Melges_2024": {
+  "includes": 95,
+  "n": 630,
+  "sha256": "92988cdf9bb8695ce40a8f8be093178df5950b2f69794734c0492aa13a02e2d4"
+ },
+ "Deckers_2022": {
+  "includes": 3,
+  "n": 106,
+  "sha256": "490941e172df2165767fb4ac461ef1c65daa095043b32a41fbfda498366894b1"
+ },
+ "Dolinska_2022": {
+  "includes": 15,
+  "n": 3231,
+  "sha256": "cddd3f3b32989f76685a11f68d82f6c4be3f030103f7ee8cbe19ca8064f4e219"
+ },
+ "Donners_2021": {
+  "includes": 14,
+  "n": 119,
+  "sha256": "ed5495406addef9449c37bb26a5cd1bc0827879d17678aadbdf1c350de09841d"
+ },
+ "Dornauer_2023": {
+  "includes": 5,
+  "n": 259,
+  "sha256": "2b0c19260cef6145b49f600314270207884abecb338b56812325b54c58d8a242"
+ },
+ "Eggmann_2023": {
+  "includes": 9,
+  "n": 266,
+  "sha256": "916a4543f51ca64560ab592195a573ed7812b602182e1e056571fe370fe1b80a"
+ },
+ "Endedijk_2021": {
+  "includes": 89,
+  "n": 1092,
+  "sha256": "68c0a6bcb02826bfd463e327e959bfcfa07c0c36273854fd21a147d04e1387f4"
+ },
+ "Farisogullari_2023": {
+  "includes": 59,
+  "n": 1439,
+  "sha256": "f6ef6fd28d8aca07009dc76806a39687d2c09da9cbf7f5d09d877282923b84d0"
+ },
+ "Fejza_2023": {
+  "includes": 45,
+  "n": 1499,
+  "sha256": "1ee435f0f5d3b6951fe45511c295082f6a4ac561543c6350306536306c3d719c"
+ },
+ "Ferreira_2022": {
+  "includes": 3,
+  "n": 223,
+  "sha256": "b1b6ff69654cac7f1dd48c03a937088755dc92b2be95c7f7e229bae6680223bb"
+ },
+ "Filges_2018": {
+  "includes": 20,
+  "n": 925,
+  "sha256": "c9a7a043db6964709bdae22be2b52780afec77c9f8556b74c1d812f2f99447c4"
+ },
+ "Filges_2022": {
+  "includes": 6,
+  "n": 781,
+  "sha256": "9ef7eaefbee9174dad5ad7ae3cf02d840699619a566774fe22df767c06b9aafe"
+ },
+ "Fong_2021": {
+  "includes": 44,
+  "n": 489,
+  "sha256": "501a9a41f36ac410badf9871df958ecefbb4f541d5282857d4a8ed25ab04cfef"
+ },
+ "Giesen_2021": {
+  "includes": 11,
+  "n": 1293,
+  "sha256": "807d6f072320eb0621f536e985e3813a03448f0d63e7f198e9729395d50091ae"
+ },
+ "Greca_2023": {
+  "includes": 24,
+  "n": 328,
+  "sha256": "60605136bb343290f8581643a1244dc841ea909a84a892c71a1736edf10b7752"
+ },
+ "Hall_2011": {
+  "includes": 4,
+  "n": 340,
+  "sha256": "003215a2351e66fa20a7c3c599421cc22c55f67fbf41bf33d5af2b8e4d622c73"
+ },
+ "Hamaker_2022": {
+  "includes": 13,
+  "n": 1313,
+  "sha256": "f9a7608fe88e5dcc1c2bc8d3a9eb7bd34ee64061499db3730796f482fab95734"
+ },
+ "Hanlon_2022": {
+  "includes": 6,
+  "n": 77,
+  "sha256": "1f90bc86b5b10581ec7e345590026766c4905eda92fd16d737d3372ec319c992"
+ },
+ "Harms_2024": {
+  "includes": 48,
+  "n": 840,
+  "sha256": "f4372fa8002eb4f205d7840689ea0da94b32664e982c03ef200425221ff500ec"
+ },
+ "Hilfiker_2017": {
+  "includes": 749,
+  "n": 7573,
+  "sha256": "dab83475c2bd1903916dcb2dcd112d4691452dd0bbcc7cfd45df3528598e557e"
+ },
+ "Kapuka_2021": {
+  "includes": 8,
+  "n": 151,
+  "sha256": "99eebb730d59b2c33518648d7ddda9e19766ebc7f9eb79b2d6fc098d150b8fd0"
+ },
+ "Kerschbaumer_2022": {
+  "includes": 29,
+  "n": 2605,
+  "sha256": "49691082e898d37d89ec9cf2bd6309ce6ae2fa7d7adb3eead4d15ff9293f03e0"
+ },
+ "Kerschbaumer_2024a": {
+  "includes": 29,
+  "n": 1949,
+  "sha256": "df79fbd000ba0661174a54b096a54ce881ca8ca96d04129fcec249cd5ff07f2a"
+ },
+ "Kerschbaumer_2024b": {
+  "includes": 15,
+  "n": 1146,
+  "sha256": "9b832d0b653bc2a2319e5dba4e03e6b1405711fad72537970dd4be874533c9ed"
+ },
+ "Lauper_2021": {
+  "includes": 137,
+  "n": 5691,
+  "sha256": "51bd340986dcdde67d70dc8df7a8dd47013a0dc3491ce1fcab8054856cf036e6"
+ },
+ "Leenaars_2019": {
+  "includes": 7,
+  "n": 1395,
+  "sha256": "067b525a2b37d4de201a5c141a4bb1b302440931f8c2b3560e737b9cc6fe7d91"
+ },
+ "Leenaars_2020": {
+  "includes": 199,
+  "n": 1956,
+  "sha256": "2b11e5b19c244beae39d788baeafb5ed1394a87aab2c4506070864994120ede7"
+ },
+ "Lewowski_2021": {
+  "includes": 9,
+  "n": 329,
+  "sha256": "78de8c8d2b60e92641974c2c03e09728a517faa0e331893bf56721534ebc1ae8"
+ },
+ "Low_2023": {
+  "includes": 36,
+  "n": 556,
+  "sha256": "d5bc623679d5f2cf31a8c018242d74cccc774b752f06cd58c2d83f0a778ca3a4"
+ },
+ "Maciel_2024": {
+  "includes": 31,
+  "n": 274,
+  "sha256": "52d6f169e06856161f6c3f79713cfeac986ddc0348d9f0a9d144327be8a93b51"
+ },
+ "Marques_2021": {
+  "includes": 16,
+  "n": 713,
+  "sha256": "caaa2ada398111678c1ad8d333b266ba47d25dd5b3d4aa6fa61a23c7d7233afe"
+ },
+ "Meijboom_2021": {
+  "includes": 21,
+  "n": 464,
+  "sha256": "03343c88d06a6c3e9e3e3fa99250b87b77411e4a1079610fc8a0a97ce7254e6e"
+ },
+ "Mejean_2024": {
+  "includes": 66,
+  "n": 486,
+  "sha256": "1b4fb49979d6b094dc447794909c2066e6c158885b48aaf8bab18d9b671a640b"
+ },
+ "Menon_2022": {
+  "includes": 35,
+  "n": 485,
+  "sha256": "0b806bb1c34d68dd3e2652d8d15e6d8003753db48f9b37a74aaee69b7489c525"
+ },
+ "Mohamed_2023": {
+  "includes": 80,
+  "n": 2699,
+  "sha256": "0a2f8f37c8533ee601dbd812daae1ff4ee7fad51fc94d2bd21aa9d66515dbbe2"
+ },
+ "Monschau_2025": {
+  "includes": 51,
+  "n": 7384,
+  "sha256": "ba867b7a132ad93ea276522924271aa2820327fc8cfa2d780b0787c55f8edb3d"
+ },
+ "Moran_2020": {
+  "includes": 39,
+  "n": 1992,
+  "sha256": "f0318e8860faf7432c5db399ddacb63f05451b87b292598323f2e67c7fda4413"
+ },
+ "Moseng_2024": {
+  "includes": 38,
+  "n": 3556,
+  "sha256": "27f09ae5b19ddc55806e1153a59cae5ec317099fd3e422638d98a0128c6746e8"
+ },
+ "Muthu_2020": {
+  "includes": 20,
+  "n": 923,
+  "sha256": "6bb5611c019b0e4839c364aea1f43d0d838f1db41d3b8a33cb38ec18809808ce"
+ },
+ "Nobrega-Dos_Santos_2023": {
+  "includes": 8,
+  "n": 277,
+  "sha256": "ce47bb9875a805a2b924a9da34fc66b7df877c7bac6e3afea56a3bd5c74c7779"
+ },
+ "Noetel_2021": {
+  "includes": 6,
+  "n": 444,
+  "sha256": "89d34a29ac00b15cbffdc692076d7dd8404fecd06393987d8a7c5281c25f1d66"
+ },
+ "Oliveira_2021": {
+  "includes": 17,
+  "n": 184,
+  "sha256": "036e4750423af82e8bea9cac5db008e9edecb5fa1361a5caabe21094e9433179"
+ },
+ "Oud_2018": {
+  "includes": 5,
+  "n": 243,
+  "sha256": "668e9e821d79338f8f33bb1875009067739f7e428a30c437d20e6e65e808917c"
+ },
+ "Parodis_2023a": {
+  "includes": 52,
+  "n": 4125,
+  "sha256": "7887b07a034597f5f785d63bd5373fbf53e80784e689fec3063e224d4bf1c0e4"
+ },
+ "Parodis_2023b": {
+  "includes": 33,
+  "n": 1679,
+  "sha256": "cbf597980e17b06e9f6748168d97c21c057c79847088f9d26abaa0657f1e6a0d"
+ },
+ "Pijls_2017": {
+  "includes": 3,
+  "n": 54,
+  "sha256": "f9a34fb0ed6e04263fb5a20dea8c33c47fca37dca637a9dd604b202b04a13241"
+ },
+ "Pijls_2018": {
+  "includes": 16,
+  "n": 301,
+  "sha256": "0cfa8963c94cd915a2f58ac6a3de03eec43f37aedaaf74669a3bfdace97cd62d"
+ },
+ "Pinos-Cisneros_2023": {
+  "includes": 21,
+  "n": 109,
+  "sha256": "958a91d485faae4252bd8f70367765dc79770c2de0dbbb6f16b12c8eab820d5c"
+ },
+ "Quevedo_2023": {
+  "includes": 18,
+  "n": 199,
+  "sha256": "41d15dd5cecf60cabdcacf80eaf3a09e9b425da60ca520e4f53c0ab2ea3aa949"
+ },
+ "Ramiro_2015": {
+  "includes": 18,
+  "n": 338,
+  "sha256": "55c240182a2b56fd922166572e7c56d00576e66400079a9c8e996dcf6d294267"
+ },
+ "Rinne_2021": {
+  "includes": 194,
+  "n": 815,
+  "sha256": "1aac55205d92b09d1d4dc83b383f6b810f5081b8543cb7c73e0364ce0b9f202b"
+ },
+ "Roberts_2021": {
+  "includes": 3,
+  "n": 883,
+  "sha256": "ef7ecafd6085dd93297c2ae72f0e955fa52f0eb5ab3cd023139f268fa2be8f2f"
+ },
+ "Ruggeri_2019": {
+  "includes": 11,
+  "n": 2265,
+  "sha256": "20e5b9d03e2b0c16480752ef7b264b6c2e88be2110eee3c8e4471f3fb9d19dd7"
+ },
+ "Sanchez-Acedo_2023": {
+  "includes": 20,
+  "n": 345,
+  "sha256": "ac109cedd4f4323eec17d35b8e23849e2f551a3a1c50accace992b2246e083c8"
+ },
+ "Sanchez-Alvarez_2023": {
+  "includes": 80,
+  "n": 2289,
+  "sha256": "10718a8f156139324b226a0b811cf489dd15d64a4b8dbd30330cb822c0f7976a"
+ },
+ "Sanchez-Gomez_2024": {
+  "includes": 7,
+  "n": 385,
+  "sha256": "90b399f38d1bdd4413a10f235dee13953f737a503417046796236739212d9370"
+ },
+ "Santos_2018": {
+  "includes": 7,
+  "n": 488,
+  "sha256": "64068ba45cac19492b2c9ed9e8a250f18f04dca9be3cfa4db00b4fc633adf161"
+ },
+ "Seghers_2022": {
+  "includes": 16,
+  "n": 1759,
+  "sha256": "59f513646fc130027a51a6878dbf6888cf4c547b722b7ad30fb7261105b5112d"
+ },
+ "Sep_2021": {
+  "includes": 28,
+  "n": 147,
+  "sha256": "325d3621fbbafaf7b2bee24a5eadc5abffd97326186e7dec704a3a1a16004283"
+ },
+ "Sepriano_2020": {
+  "includes": 29,
+  "n": 1908,
+  "sha256": "9c28a530dfbdd34f0d54bd427fe7b4d2a3ff2db90d3caa0cf0e6c6269758ba2e"
+ },
+ "Sepriano_2022": {
+  "includes": 57,
+  "n": 1760,
+  "sha256": "d15bb62f2bfbab8736eebd8e9f4dee8d6ffe62b2dfe572a4580e051b32067a0f"
+ },
+ "Smid_2019": {
+  "includes": 11,
+  "n": 770,
+  "sha256": "01da1555434ce2d8c24abeb632fe71288083d004f9502f63c664d3983284fe70"
+ },
+ "Taschner_2024": {
+  "includes": 34,
+  "n": 1323,
+  "sha256": "7df271d8878bd33a1ebe8cb463c2bf6893d09a38da78453a6c770d8bf94dd328"
+ },
+ "Tektonidou_2019": {
+  "includes": 58,
+  "n": 1251,
+  "sha256": "583cc1c7f3ddd2ee2548ae1bc58542ff0a34ecdc014f22b94ae3f799dadb770c"
+ },
+ "Theobald_2021": {
+  "includes": 9,
+  "n": 70,
+  "sha256": "2adb905bb94339d25a5a640a5b65be36f446517f7fca892b92110090a92dd0ca"
+ },
+ "Toffalini_2021": {
+  "includes": 22,
+  "n": 328,
+  "sha256": "55a2afb60e3771ec019eb582024cf9b39ca8f3596131519eabf6ae1358dd3c63"
+ },
+ "Tumkaya_2018": {
+  "includes": 39,
+  "n": 481,
+  "sha256": "c2fb5e196f85bac3c044c58b642496ef9892c2a59db6ef9d3d3d3df2d93e2b24"
+ },
+ "Verdugo-Castro_2022": {
+  "includes": 10,
+  "n": 1245,
+  "sha256": "efc11315aab17408d11943758a71f2bdf6cf1482338450d19ce5ecaa681b8020"
+ },
+ "Viguie_2020": {
+  "includes": 104,
+  "n": 1978,
+  "sha256": "6caeade0132089ae0771cf44f956e9327f860d6d1b55ef68841346136e182c13"
+ },
+ "Walker_2018": {
+  "includes": 64,
+  "n": 11735,
+  "sha256": "43af588f6cd6c00642f3328342b587a24b8a6387e76eca49dd3d4e6eefb1f481"
+ },
+ "Ward_2020": {
+  "includes": 8,
+  "n": 374,
+  "sha256": "e920849634e0efac791836a0202035dea85589fe660c3bf2eb633ac065b2d531"
+ },
+ "Wassenaar_2017": {
+  "includes": 23,
+  "n": 1523,
+  "sha256": "631bec6ffa48bc0328eae15f9f474245cabe70bdf2598906fd866b8a3ff75855"
+ },
+ "Webers_2022": {
+  "includes": 84,
+  "n": 8078,
+  "sha256": "f94469199e7ff84c335a326055741aa7aa1d01db8a5cb6a7d915870b740a7c39"
+ },
+ "Wijnen_2024": {
+  "includes": 6,
+  "n": 399,
+  "sha256": "864a46807822250ced1500d2bc7eefb494ed04258ac2043301ee337d85957265"
+ },
+ "Williamson_2023": {
+  "includes": 5,
+  "n": 258,
+  "sha256": "87d414d1af245f8f808ad36994287353c43dfb7f7304f3c43ac5a63cb1e39316"
+ },
+ "Wolters_2018": {
+  "includes": 9,
+  "n": 1683,
+  "sha256": "5200f11313ca62e629fed2b103d9a9f4aaca4dee3490f08e49012a1e56c871fd"
+ },
+ "Xu_2022": {
+  "includes": 21,
+  "n": 960,
+  "sha256": "ade8d3ecba7ddbd6547bb165a72198ebf9a4fde35f4ce415af6227af96f2ef87"
+ },
+ "Zakeri-Nasrabadi_2023a": {
+  "includes": 9,
+  "n": 627,
+  "sha256": "333abe6d7d85d5a7ff2e82ea0a3b20ef0e63c2610606d68b9ff899e4ee18a9af"
+ },
+ "Zakeri-Nasrabadi_2023b": {
+  "includes": 46,
+  "n": 1720,
+  "sha256": "2321277be87a2e3291f42ca982ac3b505ba6499a5ba5e85295063806c97a4bf5"
+ },
+ "Zanframundo_2022": {
+  "includes": 40,
+  "n": 1334,
+  "sha256": "1248d214bee6926b9f74e93f8a8239d3117f08bff9954835d4ef97fb6b16bb80"
+ },
+ "Zinsser_2022": {
+  "includes": 3,
+  "n": 125,
+  "sha256": "7d12a92d91946aea8e5853484bfd91004acff4822d3b0ff56059f878d8bc0487"
+ },
+ "de_Matteis_2024a": {
+  "includes": 3,
+  "n": 140,
+  "sha256": "fbeae76e2f102067ea862b62ec3eed2b1e4c8691852a7549e2a2000df9957410"
+ },
+ "de_Matteis_2024b": {
+  "includes": 24,
+  "n": 553,
+  "sha256": "d53cae0927beb9addcbb059f5db236bc30288d946ca8d287114e1964f7ea4439"
+ },
+ "van_Ballegooijen_2024": {
+  "includes": 87,
+  "n": 3295,
+  "sha256": "dd2e4ac7e0b7d8f3f9a0063d0d70f03636da8338af1e9c592eccba6ca04dac80"
+ },
+ "van_Dis_2019": {
+  "includes": 20,
+  "n": 3154,
+  "sha256": "341ee5dffad1b77e8376dbb67d295d6ada6e080e8d95d3e852bdd59542dc0692"
+ },
+ "van_Heugten_Breurkes_2022": {
+  "includes": 13,
+  "n": 303,
+  "sha256": "06636fb8ffdaf59019ed660a3d9fc25f90736203dc1ab76d8e3f07711c177874"
+ },
+ "van_Hoorn_2020": {
+  "includes": 15,
+  "n": 1154,
+  "sha256": "b27f80ae1393b41d959086f3270324a58496468f51e547c82e9eb4d9561e8328"
+ },
+ "van_de_Schoot_2025": {
+  "includes": 100,
+  "n": 6948,
+  "sha256": "04a3ddc0ae9506af492dc107113f33cc03d4d7d48171bfaa85f532188c75f0fb"
+ },
+ "van_der_Valk_2021": {
+  "includes": 46,
+  "n": 362,
+  "sha256": "557f69fd42f8269f28b4683bd6f115762c79233eb2ccc15caf812051e6a25d9e"
+ },
+ "van_der_Waal_2022": {
+  "includes": 17,
+  "n": 1158,
+  "sha256": "ed26af69dad93fa1890811dbf7b9175a22b243f23c9ccbcde2a39a205456c7fb"
+ }
+}
