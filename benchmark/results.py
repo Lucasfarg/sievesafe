@@ -102,6 +102,12 @@ rows.append(["**pooled**", f"{len(pooled_test):,}", P, f"{common.auc([r['s'] for
 table(["review", "records", "includes", "AUC", "WSS@95", *[f"t={t} ({k}) recall / auto-excl." for k, t in T.items()],
        f"t={SAFE_C} (corrected 100%)"], rows, "lrrrrrrrr")
 per = {t: [at(v, t) for v in test.values()] for t in (*T.values(), SAFE_C)}
+pilot_in_test = [k for k in common.PILOT_REVIEWS if k in test]
+clean = [r for k, v in test.items() if k not in pilot_in_test for r in v]
+L += [(f"The question's wording was chosen in a pilot on {len(common.PILOT_REVIEWS)} SYNERGY reviews ({', '.join(common.PILOT_REVIEWS)}), "
+       f"whose labels were seen; {len(pilot_in_test)} of them ({', '.join(pilot_in_test)}) is in the test split. Without it, at {SAFE}: "
+       f"{sum(at(v, SAFE)[0] == 1 for k, v in test.items() if k not in pilot_in_test)}/{len(test) - len(pilot_in_test)} reviews keep every include, "
+       f"pooled recall {pct1(at(clean, SAFE)[0])}, records below {pct(at(clean, SAFE)[1])}."), ""]
 L += [(f"Median per review: AUC {statistics.median(common.auc([r['s'] for r in v], [r['y'] for r in v]) for v in test.values()):.3f}, "
        f"WSS@95 {statistics.median(common.wss(common.ranked(v), len(v), sum(r['y'] for r in v), 0.95) for v in test.values()):.3f}."), ""]
 table(["threshold", "reviews with 100% recall", "reviews with ≥98% recall", "reviews with ≥95% recall", "lowest review recall", "pooled recall",

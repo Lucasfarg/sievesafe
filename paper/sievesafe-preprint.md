@@ -1,7 +1,3 @@
-<!-- Draft for medRxiv. Every number comes from benchmark/results.md in the sievesafe repository (external validation: benchmark/external/results*.md).
-     [[…]] marks what the author must fill before submission. References were checked against their sources on
-     2026-09-27. -->
-
 # A pre-specified exclusion threshold for zero-shot title and abstract screening: development on SYNERGY+ and external validation on CLEF TAR
 
 Lucas Farias, Independent researcher, Caruaru, Pernambuco, Brazil · lucasfg.dev@gmail.com · ORCID 0009-0008-2666-766X (https://orcid.org/0009-0008-2666-766X)
@@ -75,7 +71,9 @@ distributed with SYNERGY+, and the record's title and abstract. The question ask
 full-text review. A short policy told the model that a record should pass whenever it could meet every inclusion
 criterion, including when the title and abstract do not say enough to tell, and that missing a relevant study is far
 worse than reading an extra one. We used no labelled examples, no fine-tuning and no prompt changes between reviews;
-the exact question is in the repository (`src/sievesafe/jev.py`). Test and calibration answers were requested in
+the exact question is in the repository (`src/sievesafe/jev.py`). Its wording was chosen beforehand in a small pilot on
+four SYNERGY reviews (Donners 2021, Meijboom 2021, Oud 2018 and Sep 2021), comparing variants of the question against
+their labels. One of these, Donners 2021, is in the test split, so we also report the test results without it. Test and calibration answers were requested in
 September 2026 under the model alias `jev-latest`. The stability run, the external validation and the released tool
 pin `jev-1.13.0`, the version current at the time; the stability analysis compares the two.
 
@@ -146,14 +144,16 @@ records without an abstract were never counted below the threshold, and the scor
 ### Reporting
 
 Reporting was informed by the TRIPOD-LLM guideline for studies using large language models [16], where its items apply
-to a retrospective evaluation of a screening classifier [[attach the completed TRIPOD-LLM checklist as a supplementary file]], and the RAISE recommendations on reporting AI use in evidence
+to a retrospective evaluation of a screening classifier (the completed checklist is a supplementary file), and the RAISE recommendations on reporting AI use in evidence
 synthesis [6].
 
 ### Software and availability
 
 sievesafe (https://github.com/Lucasfarg/sievesafe) reads RIS, PubMed/MEDLINE, Web of Science and CSV exports, writes the results back in the
 same format, and produces a report with the count for the PRISMA 2020 flow diagram [1] and a draft methods paragraph.
-It never excludes records without an abstract, since the threshold was only validated on records that had one. The
+By default it only ranks the records and flags those below the threshold; removing them is an option that comes with
+a random sample of the removed records for local validation. It never excludes records without an abstract, since the
+threshold was only validated on records that had one. The
 `benchmark/` directory holds the scripts, the model answers (identifiers and probabilities only, without record text),
 the frozen calibration and a manifest of the data, and `benchmark/results.py` regenerates every number in this paper.
 
@@ -177,7 +177,8 @@ records below them. The corrected procedure gives 0.28, 0.19 and 0.08 (74%, 64% 
 
 At the frozen safe threshold, no finally included study fell below it in any review. The two looser thresholds met
 their own target as a per-review floor in only 15 (95%) and 18 (98%) of the 23 reviews, and the corrected safe threshold
-would have lost one included study in one review. The pooled AUC was 0.938; per review, the median AUC was 0.966 and
+would have lost one included study in one review. Without Donners 2021, which was seen in the pilot, the safe threshold
+kept every include in 22 of 22 reviews, with 30% of records below it. The pooled AUC was 0.938; per review, the median AUC was 0.966 and
 the median WSS@95 was 0.758.
 
 ### Leave-one-review-out
@@ -291,6 +292,9 @@ records, but it did not start missing included studies. In this single compariso
 - **Pre-specification.** The thresholds were fixed before the test answers were compared with labels, but the
   calibration script had the flaw described above, and the corrected procedure would have lost one included study. The
   external plans were committed to git before the model calls but not lodged in a public registry.
+- **Prompt pilot.** The question's wording was chosen on four SYNERGY reviews whose labels were seen, and one of them is
+  in the test split. The results without it are unchanged in substance, and the CLEF TAR reviews played no part in the
+  pilot.
 - **Leave-one-review-out.** At the 100% target one included study was lost in one of 43 reviews; the upper bound on the
   share of reviews that could lose one is 11%.
 - **Language and abstracts.** Most reviews restricted their searches to English and all records had abstracts. The tool

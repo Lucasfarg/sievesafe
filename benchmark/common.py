@@ -23,6 +23,8 @@ DATA = Path(os.environ.get("SYNERGY_DATA", HERE / "data")).expanduser()
 CALIBRATION = HERE / "calibration.json"
 MANIFEST = HERE / "data-manifest.json"
 TEST, TRAIN, TRAIN_CAP = "f1", "c1", 1000
+# Reviews used in the pilot that chose the question's wording, comparing variants against their labels (jev-lab runs s1–s3).
+PILOT_REVIEWS = ("Donners_2021", "Meijboom_2021", "Oud_2018", "Sep_2021")
 PRICE_PER_TOKEN = 0.042 / 1e6
 csv.field_size_limit(10**8)
 sys.path.insert(0, str(HERE.parent / "src"))

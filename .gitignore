@@ -11,3 +11,5 @@ benchmark/.asreview/
 benchmark/.venv-asreview/
 benchmark/answers/*.jsonl
 benchmark/external/data
+paper/build/
+paper/*.pdf

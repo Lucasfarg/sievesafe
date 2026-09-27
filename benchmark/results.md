@@ -47,6 +47,8 @@ Recall = share of the finally included studies scoring at or above the threshold
 | van_der_Waal_2022 | 1158 | 17 | 0.966 | 0.697 | 94% / 77% | 100% / 60% | 100% / 15% | 100% / 26% |
 | **pooled** | 33,001 | 597 | 0.938 |  | **93% / 76%** | **98% / 66%** | **100% / 29%** | **100% / 41%** |
 
+The question's wording was chosen in a pilot on 4 SYNERGY reviews (Donners_2021, Meijboom_2021, Oud_2018, Sep_2021), whose labels were seen; 1 of them (Donners_2021) is in the test split. Without it, at 0.06: 22/22 reviews keep every include, pooled recall 100.0%, records below 30%.
+
 Median per review: AUC 0.966, WSS@95 0.758.
 
 | threshold | reviews with 100% recall | reviews with ≥98% recall | reviews with ≥95% recall | lowest review recall | pooled recall | auto-excluded (pooled) | auto-excluded (mean per review) |

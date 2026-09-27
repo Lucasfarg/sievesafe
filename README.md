@@ -143,6 +143,8 @@ still a job for your reference manager.
   In the leave-one-review-out test one review lost one included study; in the external tests one review lost one, and
   the other three sets lost none. When we gave the model only the review's objectives, it removed fewer records but did not lose more
   studies; that is a single test, though.
+- **One test review was seen while choosing the question's wording** (Donners 2021, in a four-review pilot). Without it
+  the SYNERGY+ results are the same in substance; see [`benchmark/results.md`](benchmark/results.md).
 - **A known flaw in how the threshold was set**, explained in [`benchmark/README.md`](benchmark/README.md). The corrected
   procedure gives a slightly higher threshold; sievesafe keeps the original, more cautious one.
 
