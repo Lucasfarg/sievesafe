@@ -18,8 +18,8 @@ labelled examples. We froze an exclusion threshold on 20 reviews from the SYNERG
 the 23 reviews of the dataset's test split (33,001 records, 597 finally included studies). We report per-review recall,
 the share of records below the threshold, leave-one-review-out stability over 43 reviews, agreement with human
 title/abstract decisions, a comparison with ASReview 3.0.8, and run-to-run stability. We then tested the threshold,
-unchanged and with a pre-registered plan, on 20 Cochrane reviews from CLEF TAR 2019, with criteria taken from each
-review's abstract, and again with the review's objectives alone. Code, model answers and the frozen threshold are public.
+unchanged and with a pre-registered plan, on 20 intervention and 8 diagnostic test accuracy Cochrane reviews from CLEF
+TAR 2019, with criteria taken from each review's abstract, and on the intervention reviews again with the objectives alone. Code, model answers and the frozen threshold are public.
 
 **Results.** At the frozen threshold (0.06), no finally included study fell below it in any of the 23 test reviews, while
 29% of all records did (24% on average per review). Recalibrating with each of 43 reviews held out in turn, the
@@ -28,8 +28,9 @@ Against human title/abstract decisions (12 reviews), the threshold kept 96% of t
 (lowest 78%); none of the records it lost was finally included. As a ranking, the median work saved at 95% recall
 (WSS@95) was 0.763, against 0.723 for ASReview with its default active-learning model and one labelled record of each
 class; at 100% recall, 0.808 against 0.711. Scores were stable between runs (correlation 0.996). Screening cost
-US$ 0.000047 per record. In the external validation no finally included study fell below the threshold in any of the 18
-reviews with includes (510 studies), with 52% of records below it; with the objectives alone, again none, with 34% below.
+US$ 0.000047 per record. In the external validation no finally included study fell below the threshold in any of the 26
+reviews with includes (510 intervention and 250 diagnostic studies), with 52% and 45% of records below it; with the
+objectives alone, again none, with 34% below.
 
 **Conclusions.** A threshold frozen before evaluation, on a zero-shot probability, transferred to unseen reviews and to
 another collection without losing an included study, and removed 29% to 52% of their records. Vaguer criteria made it
@@ -125,7 +126,8 @@ SELECTION CRITERIA sections of each review's abstract (latest version published 
 from PubMed. Per review, every record included at either level was kept, plus a seeded random sample of the others up to
 1,000 records, weighted back to the review's size. A second condition, also registered before any call, gave the model
 the OBJECTIVES section alone, on every include plus the first 300 other records of the same sample, so that each record
-was scored under both conditions. As in the tool, records without an abstract were never counted below the threshold;
+was scored under both conditions. A third set, registered before any call, applied the full criteria to the 8 diagnostic
+test accuracy (DTA) test topics of the same task (30,521 records), with every include plus 300 other records per review. As in the tool, records without an abstract were never counted below the threshold;
 the scores alone gave the same recall.
 
 ### Software and availability
@@ -203,23 +205,24 @@ Sixty-three records (3.1%) crossed the safe threshold between runs, none of them
 
 ### External validation
 
-**Table 4. CLEF TAR 2019, 20 Cochrane reviews (18 with at least one final include, 510 finally included studies), frozen
-threshold 0.06.**
+**Table 4. CLEF TAR 2019 Cochrane reviews at the frozen threshold 0.06: 20 intervention reviews (18 with a final include,
+510 finally included studies) and 8 DTA reviews (250 finally included studies).**
 
-| | objectives and selection criteria | objectives only |
-|:--|--:|--:|
-| reviews keeping every final include | 18/18 | 18/18 |
-| records below the threshold (pooled, weighted) | 52% | 34% |
-| records below the threshold (mean per review) | 42% | 19% |
-| title/abstract includes kept (pooled; lowest review) | 99.7%; 96% | 100.0%; 100% |
-| median WSS@95 / WSS@100 (weighted) | 0.889 / 0.936 | 0.861 / 0.904 |
-| 95% upper bound on reviews losing any include | 15% | 15% |
+| | intervention, objectives and selection criteria | intervention, objectives only | DTA, objectives and selection criteria |
+|:--|--:|--:|--:|
+| reviews keeping every final include | 18/18 | 18/18 | 8/8 |
+| records below the threshold (pooled, weighted) | 52% | 34% | 45% |
+| records below the threshold (mean per review) | 42% | 19% | 30% |
+| title/abstract includes kept (pooled; lowest review) | 99.7%; 96% | 100.0%; 100% | 99.1%; 94% |
+| median WSS@95 / WSS@100 (weighted) | 0.889 / 0.936 | 0.861 / 0.904 | 0.733 / 0.660 |
+| 95% upper bound on reviews losing any include | 15% | 15% | 31% |
 
-Both conditions met the pre-registered rule. With full criteria, the corrected SYNERGY+ threshold (0.08) would have lost
+All three met the pre-registered rule. With full criteria, the corrected SYNERGY+ threshold (0.08) would have lost
 included studies in 2 of 18 reviews (lowest 97%). On the 6,237 records scored under both conditions, the scores
 correlated at 0.874; with the objectives alone the mean score rose from 0.208 to 0.286 and the share of records below
-0.06 fell from 38% to 18% (unweighted), and no final include moved from above the threshold to below it. The two
-conditions cost US$ 0.595 (13,637 requests) and US$ 0.244 (6,237 requests).
+0.06 fell from 38% to 18% (unweighted), and no final include moved from above the threshold to below it. The three
+cost US$ 0.595 (13,637 requests), US$ 0.244 (6,237 requests) and US$ 0.114 (2,626 requests). The DTA reviews ranked less
+well than the intervention reviews (median AUC 0.937 against 0.984), but the safe threshold still kept every include.
 
 ## Discussion
 
@@ -243,8 +246,8 @@ Better criteria buy more work saved, not more safety.
 
 ## Limitations
 
-- **Two collections.** 23 SYNERGY+ test reviews and 18 CLEF TAR reviews with includes; with no failure in 18 reviews
-  the 95% upper bound on the share of reviews losing an include is still 15%. The criteria came from published reviews;
+- **Two collections.** 23 SYNERGY+ test reviews and 26 CLEF TAR reviews with includes; per set, the 95% upper bound on
+  the share of reviews losing an include is still 15% (18 intervention reviews) and 31% (8 DTA reviews). The criteria came from published reviews;
   the objectives-only condition is one test of vaguer criteria, and a prospective review is still needed.
 - **Sampling in the external validation.** Non-included records were sampled and weighted, so the shares of records
   below the threshold there are estimates; recall is exact, since every include was scored.
