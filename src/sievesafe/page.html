@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>sievesafe</title>
+<style>
+  :root { --bg: #fbfbfa; --fg: #1d1d1b; --muted: #5f5f5a; --line: #d9d9d4; --card: #ffffff; --accent: #1f5fbf; --accent-fg: #fff;
+          --warn-bg: #fff5e0; --warn-fg: #6b4400; --err: #b3261e; --ok: #1e6b3a; --bar: #e6e6e1; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161615; --fg: #ecece8; --muted: #a3a39c; --line: #3a3a37; --card: #1f1f1d; --accent: #7aa7ff; --accent-fg: #0b1a33;
+            --warn-bg: #3a2c0c; --warn-fg: #ffd98a; --err: #ff8a80; --ok: #7ed49a; --bar: #2c2c29; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 48px; }
+  h1 { font-size: 1.6rem; margin: 0; } h2 { font-size: 1.1rem; margin: 0 0 12px; }
+  .lede { color: var(--muted); margin: 4px 0 24px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-weight: 600; margin: 14px 0 6px; } label:first-child { margin-top: 0; }
+  .hint { font-weight: 400; color: var(--muted); font-size: .9rem; }
+  input[type=text], input[type=number], textarea { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--bg); color: var(--fg); font: inherit; }
+  textarea { min-height: 160px; resize: vertical; }
+  input[type=file] { font: inherit; color: var(--fg); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  fieldset { border: 0; padding: 0; margin: 14px 0 0; } legend { font-weight: 600; margin-bottom: 6px; }
+  .choice { display: flex; gap: 10px; align-items: flex-start; padding: 10px; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 8px; font-weight: 400; }
+  .choice input { margin-top: 5px; }
+  .warn { background: var(--warn-bg); color: var(--warn-fg); border-radius: 6px; padding: 10px 12px; margin: 8px 0 0; font-size: .95rem; }
+  .warn label { font-weight: 600; margin: 8px 0 0; display: flex; gap: 8px; align-items: flex-start; }
+  button { font: inherit; font-weight: 600; padding: 10px 18px; border-radius: 6px; border: 0; background: var(--accent); color: var(--accent-fg); cursor: pointer; margin-top: 16px; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; } .row > div { flex: 1 1 180px; }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 0; } dt { color: var(--muted); } dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .bar { height: 10px; background: var(--bar); border-radius: 5px; overflow: hidden; margin: 8px 0; }
+  .bar > div { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+  .error { color: var(--err); font-weight: 600; } .ok { color: var(--ok); font-weight: 600; }
+  ul.files { padding-left: 18px; } ul.files a { color: var(--accent); cursor: pointer; }
+  footer { color: var(--muted); font-size: .85rem; margin-top: 24px; }
+  [hidden] { display: none !important; }
+  @media print { button, input[type=file] { display: none; } section { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>sievesafe</h1>
+  <p class="lede">Title/abstract screening for systematic reviews that only removes records when it is safe to.</p>
+
+  <section aria-labelledby="s1">
+    <h2 id="s1">1. Your search and your criteria</h2>
+    <label for="file">Search export <span class="hint">— RIS (.ris, .txt) or CSV (.csv, .tsv) from PubMed, Scopus, Web of Science, Rayyan…</span></label>
+    <input id="file" type="file" accept=".ris,.txt,.csv,.tsv">
+    <label for="title">Review title</label>
+    <input id="title" type="text" autocomplete="off" placeholder="e.g. Emicizumab prophylaxis in children with haemophilia A">
+    <label for="criteria">Eligibility criteria <span class="hint">— paste the inclusion and exclusion criteria from your protocol</span></label>
+    <textarea id="criteria" placeholder="Inclusion: …&#10;Exclusion: …"></textarea>
+    <fieldset>
+      <legend>What should sievesafe do?</legend>
+      <label class="choice"><input type="radio" name="mode" value="rank" checked>
+        <span><b>Rank</b> (recommended) — keep every record, order them by probability, and flag the ones below the safe threshold.</span></label>
+      <label class="choice"><input type="radio" name="mode" value="exclude">
+        <span><b>Exclude</b> — remove records below the safe threshold before human screening.</span></label>
+      <div class="warn" id="exclude-warn" hidden>
+        Automated exclusion must be validated on your own review before you rely on it (RAISE): screen a random sample of the removed
+        records and report how many you would have included. The removed records are kept in a separate file for this.
+        <label><input type="checkbox" id="ack"> I will validate the removed records locally and report it.</label>
+      </div>
+    </fieldset>
+    <button id="estimate">Estimate the cost</button>
+    <p id="err1" class="error" role="alert"></p>
+  </section>
+
+  <section aria-labelledby="s2" id="confirm" hidden>
+    <h2 id="s2">2. Confirm</h2>
+    <dl>
+      <dt>Records</dt><dd id="n"></dd>
+      <dt>Without abstract</dt><dd id="noabs"></dd>
+      <dt>Already scored</dt><dd id="cached"></dd>
+      <dt>Estimated cost</dt><dd id="cost"></dd>
+    </dl>
+    <div class="row">
+      <div><label for="budget">Spend at most (US$) <span class="hint">— records left unscored are kept, never removed</span></label>
+        <input id="budget" type="number" min="0" step="0.01"></div>
+    </div>
+    <button id="start">Screen</button>
+    <p id="err2" class="error" role="alert"></p>
+  </section>
+
+  <section aria-labelledby="s3" id="progress" hidden>
+    <h2 id="s3">3. Results</h2>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="bar"><div></div></div>
+    <p id="status" aria-live="polite"></p>
+    <ul class="files" id="files"></ul>
+  </section>
+
+  <footer>
+    sievesafe __VERSION__ · model __MODEL__ · safe threshold __THRESHOLD__ · Runs on this computer: only each record's title and
+    abstract, with your title and criteria, are sent to the TypeSafe API. Results are also saved in the folder shown in the terminal.
+  </footer>
+</main>
+<script>
+"use strict";
+const TOKEN = "__TOKEN__";
+const $ = (id) => document.getElementById(id);
+const usd = (x) => "US$ " + (x < 0.01 && x > 0 ? x.toFixed(4) : x.toFixed(2));
+let runId = null;
+
+async function api(path, body) {
+  const res = await fetch(path, { method: body ? "POST" : "GET", headers: { "X-Sievesafe-Token": TOKEN, "Content-Type": "application/json" },
+                                  body: body ? JSON.stringify(body) : undefined });
+  const data = await res.json().catch(() => ({ error: "unexpected answer from the server" }));
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+function mode() { return document.querySelector("input[name=mode]:checked").value; }
+document.querySelectorAll("input[name=mode]").forEach((r) => r.addEventListener("change", () => { $("exclude-warn").hidden = mode() !== "exclude"; }));
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",", 2)[1] || "");
+    r.onerror = () => reject(new Error("could not read the file"));
+    r.readAsDataURL(file);
+  });
+}
+
+$("estimate").addEventListener("click", async () => {
+  $("err1").textContent = ""; $("confirm").hidden = true; $("progress").hidden = true;
+  const file = $("file").files[0];
+  if (!file) { $("err1").textContent = "Choose your search export first."; return; }
+  if (mode() === "exclude" && !$("ack").checked) { $("err1").textContent = "Tick the validation box to use Exclude, or choose Rank."; return; }
+  $("estimate").disabled = true;
+  try {
+    const d = await api("/api/runs", { filename: file.name, data: await readFile(file), title: $("title").value, criteria: $("criteria").value, mode: mode(), validated: $("ack").checked });
+    runId = d.id;
+    $("n").textContent = d.records.toLocaleString(); $("noabs").textContent = d.no_abstract.toLocaleString();
+    $("cached").textContent = d.cached.toLocaleString(); $("cost").textContent = usd(d.estimate);
+    const suggested = Math.min(d.max_budget, Math.max(0.01, Math.ceil(d.estimate * 150) / 100));
+    $("budget").value = suggested.toFixed(2); $("budget").max = d.max_budget;
+    $("start").textContent = d.cached === d.records ? "Build the results (nothing to spend)" : "Screen";
+    $("confirm").hidden = false;
+    if (!d.has_key) $("err2").textContent = "No TypeSafe API key found on this computer: see the terminal.";
+  } catch (e) { $("err1").textContent = e.message; }
+  $("estimate").disabled = false;
+});
+
+$("start").addEventListener("click", async () => {
+  $("err2").textContent = ""; $("start").disabled = true;
+  try {
+    await api(`/api/runs/${runId}/start`, { budget: Number($("budget").value) });
+    $("progress").hidden = false; $("files").replaceChildren();
+    poll();
+  } catch (e) { $("err2").textContent = e.message; $("start").disabled = false; }
+});
+
+async function poll() {
+  let d;
+  try { d = await api(`/api/runs/${runId}`); } catch (e) { $("status").textContent = e.message; return; }
+  const pct = d.total ? Math.round((100 * d.done) / d.total) : 100;
+  $("bar").firstElementChild.style.width = pct + "%"; $("bar").setAttribute("aria-valuenow", pct);
+  if (d.state === "running") { $("status").textContent = `Scoring ${d.done.toLocaleString()} of ${d.total.toLocaleString()} records…`; setTimeout(poll, 1000); return; }
+  $("start").disabled = false;
+  if (d.state === "error") { $("status").innerHTML = ""; $("status").append(Object.assign(document.createElement("span"), { className: "error", textContent: d.error })); return; }
+  const s = d.summary;
+  const what = d.mode === "exclude" ? `${s.excluded.toLocaleString()} removed (below the safe threshold)` : `${s.below_threshold.toLocaleString()} flagged below the safe threshold, all kept`;
+  $("status").innerHTML = "";
+  $("status").append(Object.assign(document.createElement("span"), { className: "ok", textContent: "Done. " }),
+    `${s.scored.toLocaleString()} of ${s.total.toLocaleString()} records scored; ${what}; spent ${usd(s.spent)}.` +
+    (s.scored < s.total ? " Records left unscored by the budget are first in the list and were not removed." : ""));
+  const labels = { "ranked.csv": "ranked list with probabilities", "report.md": "report for your methods section and PRISMA diagram" };
+  for (const name of s.files) {
+    const a = Object.assign(document.createElement("a"), { textContent: name, href: "#" });
+    a.addEventListener("click", (ev) => { ev.preventDefault(); download(name); });
+    const li = document.createElement("li");
+    li.append(a, " — " + (labels[name] || (name.startsWith("to-screen") ? "records for human screening, most likely first" : "removed records, for local validation")));
+    $("files").append(li);
+  }
+}
+
+async function download(name) {
+  const res = await fetch(`/api/runs/${runId}/files/${name}`, { headers: { "X-Sievesafe-Token": TOKEN } });
+  if (!res.ok) { $("status").textContent = "Download failed: " + res.statusText; return; }
+  const disposition = res.headers.get("Content-Disposition") || "";
+  const url = URL.createObjectURL(await res.blob());
+  const a = Object.assign(document.createElement("a"), { href: url, download: (disposition.match(/filename="([^"]+)"/) || [, name])[1] });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+</script>
+</body>
+</html>

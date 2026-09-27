@@ -1,6 +1,7 @@
 """sievesafe — zero-shot title/abstract screening that only auto-excludes when it is safe to.
 
   sievesafe screen <search.ris|.csv> --criteria criteria.txt --title "Review title" [options]
+  sievesafe serve [--port 8765] [--dir sievesafe-results] [--max-budget 2.00]     the same in a local web page
 
   --mode rank       (default) keep everything; order by probability and flag records below the safe threshold
   --mode exclude    remove records below the safe threshold before human screening (opt-in; validate locally)
@@ -14,11 +15,10 @@ excluded.<ris|csv> in exclude mode, and report.md (PRISMA count, methods paragra
 from __future__ import annotations
 
 import argparse
-import csv
 import sys
 from pathlib import Path
 
-from sievesafe import SAFE_THRESHOLD, jev, records, report
+from sievesafe import jev, run
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -33,7 +33,17 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--budget", type=float, default=2.0)
     s.add_argument("--yes", action="store_true")
     s.add_argument("--key-file", type=Path)
+    v = sub.add_parser("serve", help="open a local page to screen without the terminal")
+    v.add_argument("--port", type=int, default=8765)
+    v.add_argument("--dir", type=Path, default=Path("sievesafe-results"), help="where results are saved (default ./sievesafe-results)")
+    v.add_argument("--max-budget", type=float, default=2.0, help="highest spend the page may confirm for one run (default 2.00)")
+    v.add_argument("--key-file", type=Path)
+    v.add_argument("--no-browser", action="store_true")
     a = p.parse_args(argv)
+    if a.cmd == "serve":
+        from sievesafe import serve
+        serve.serve(a.port, a.dir, a.max_budget, a.key_file, not a.no_browser)
+        return 0
     try:
         return screen(a)
     except (ValueError, jev.JevError) as e:
@@ -42,53 +52,23 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def screen(a) -> int:
-    fmt, recs = records.read(a.input)
-    criteria = a.criteria.read_text(encoding="utf-8").strip()
-    if not recs:
-        raise ValueError(f"{a.input.name}: no records found")
-    if len(criteria) < 40:
-        raise ValueError("the criteria file looks empty; paste the review's inclusion and exclusion criteria")
     out = a.out or a.input.with_name(a.input.stem + "-sievesafe")
-    out.mkdir(parents=True, exist_ok=True)
-    cache = jev.Cache(out / ".sievesafe-cache.tsv", criteria)
-    todo = [r for r in recs if cache.get(r) is None]
-    estimate = jev.estimate_tokens(a.title, criteria, todo) * jev.PRICE_PER_TOKEN
-    no_abstract = sum(1 for r in recs if not r.abstract)
-    print(f"{len(recs)} records ({no_abstract} without abstract), {len(recs) - len(todo)} already scored; "
-          f"estimated cost US$ {estimate:.3f} (budget US$ {a.budget:.2f})")
-    if todo and not a.yes:
+    job = run.prepare(a.input, a.title, a.criteria.read_text(encoding="utf-8"), a.mode, out)
+    print(f"{len(job.recs)} records ({job.no_abstract} without abstract), {len(job.recs) - len(job.todo)} already scored; "
+          f"estimated cost US$ {job.estimate:.3f} (budget US$ {a.budget:.2f})")
+    if job.todo and not a.yes:
         if not sys.stdin.isatty():
             raise ValueError("refusing to spend without --yes when not run from a terminal")
         if input("proceed? [y/N] ").strip().lower() not in ("y", "yes", "s", "sim"):
             return 0
-    key = jev.api_key(a.key_file) if todo else ""
 
     def progress(done: int, total: int) -> None:
         if done == total or done % 200 == 0:
             print(f"  scored {done}/{total}", file=sys.stderr)
 
-    scores, spent = jev.score(recs, a.title, criteria, cache, key, a.budget, progress=progress) if todo else (
-        {r.index: cache.get(r) for r in recs}, 0.0)
-    scored = [r for r in recs if r.index in scores]
-    ordered = sorted(recs, key=lambda r: -scores.get(r.index, 1.0))  # unscored records go first: never hidden
-    low = [r for r in scored if scores[r.index] < SAFE_THRESHOLD]
-    excluded = low if a.mode == "exclude" else []
-    keep = [r for r in ordered if r not in excluded]
-
-    with (out / "ranked.csv").open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["rank", "probability", "flag", "title"])
-        for i, r in enumerate(ordered, 1):
-            prob = scores.get(r.index)
-            flag = "not scored" if prob is None else ("below safe threshold" if prob < SAFE_THRESHOLD else "")
-            w.writerow([i, "" if prob is None else f"{prob:.4f}", flag, r.title])
-    records.write(out / f"to-screen.{fmt}", fmt, keep)
-    if a.mode == "exclude":
-        records.write(out / f"excluded.{fmt}", fmt, excluded)
-    (out / "report.md").write_text(report.build(source=a.input.name, title=a.title, criteria=criteria, mode=a.mode, n_total=len(recs),
-                                                n_scored=len(scored), n_excluded=len(excluded), n_low=len(low), spent=spent), encoding="utf-8")
-    print(f"done: {len(scored)}/{len(recs)} scored, {len(low)} below the safe threshold"
-          + (" and excluded" if a.mode == "exclude" else " (flagged, kept)") + f"; spent US$ {spent:.4f} → {out}/")
+    res = run.execute(job, jev.api_key(a.key_file) if job.todo else "", a.budget, progress)
+    print(f"done: {res['scored']}/{res['total']} scored, {res['below_threshold']} below the safe threshold"
+          + (" and excluded" if a.mode == "exclude" else " (flagged, kept)") + f"; spent US$ {res['spent']:.4f} → {out}/")
     return 0
 
 

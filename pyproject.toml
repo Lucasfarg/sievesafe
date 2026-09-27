@@ -20,5 +20,8 @@ version = { attr = "sievesafe.__version__" }
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+sievesafe = ["page.html"]
+
 [tool.ruff]
 line-length = 165
