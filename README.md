@@ -1,6 +1,7 @@
 # sievesafe
 
 [![tests](https://github.com/Lucasfarg/sievesafe/actions/workflows/tests.yml/badge.svg)](https://github.com/Lucasfarg/sievesafe/actions/workflows/tests.yml)
+[![PyPI](https://img.shields.io/pypi/v/sievesafe)](https://pypi.org/project/sievesafe/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22992077.svg)](https://doi.org/10.5281/zenodo.22992077)
 [![License: AGPL v3+](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
@@ -81,7 +82,7 @@ WSS (work saved over sampling) is the share of records a reviewer can skip, read
 You need Python 3.11 or newer. With [pipx](https://pipx.pypa.io):
 
 ```bash
-pipx install git+https://github.com/Lucasfarg/sievesafe
+pipx install sievesafe
 ```
 
 sievesafe uses [TypeSafe](https://docs.typesafe.ai)'s Jev model, which needs a paid API key. Set it as an environment
