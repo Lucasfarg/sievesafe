@@ -1,5 +1,9 @@
 # sievesafe
 
+[![License: AGPL v3+](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
+[![Dependencies: none](https://img.shields.io/badge/dependencies-none-brightgreen)](pyproject.toml)
+
 Title/abstract screening for systematic reviews that only removes records when it is safe to.
 
 You give it your search export and your eligibility criteria. For every record it estimates the probability that the
@@ -11,6 +15,11 @@ record should go on to full-text review, with no training and no labelled exampl
 
 Either way you get your records back in the format they came in, ready to import into Rayyan, Covidence, EndNote or
 Zotero, plus a report with the PRISMA 2020 count and a methods paragraph.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/serve-dark.png">
+  <img alt="The sievesafe page: upload a search export, paste the criteria, see the estimated cost and confirm" src="docs/serve-light.png" width="560">
+</picture>
 
 ## What it promises, and what it does not
 
@@ -135,6 +144,16 @@ title and abstract, and a policy that missing a relevant study is far worse than
 cached on disk by model, criteria and record text. The threshold was frozen on 20 calibration reviews as the
 highest probability that kept every one of their included studies.
 
+## How to cite
+
+Cite the software with the metadata in [`CITATION.cff`](CITATION.cff) (GitHub's "Cite this repository" button gives
+APA and BibTeX). A preprint describing the benchmark is in preparation; this section will point to it once posted.
+
+## Help and contributing
+
+Questions and bug reports: open an issue in this repository. Contributions: see [`CONTRIBUTING.md`](CONTRIBUTING.md),
+especially the rules that keep every number generated rather than typed.
+
 ## License
 
-AGPL-3.0-or-later. A preprint describing the benchmark is in preparation.
+AGPL-3.0-or-later.

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use sievesafe, please cite it as below."
+type: software
+title: "sievesafe: zero-shot title/abstract screening that only auto-excludes when it is safe to"
+abstract: >-
+  Title/abstract screening for systematic reviews with a zero-shot probabilistic model (TypeSafe Jev) and a safe
+  exclusion threshold frozen before evaluation, validated on SYNERGY+ and pre-registered on CLEF TAR.
+authors:
+  - family-names: Farias
+    given-names: Lucas
+    orcid: "https://orcid.org/0009-0008-2666-766X"
+    email: lucasfg.dev@gmail.com
+    affiliation: "Independent researcher, Caruaru, Brazil"
+version: 0.1.0
+license: AGPL-3.0-or-later
+keywords:
+  - systematic review
+  - title and abstract screening
+  - evidence synthesis
+  - automation
+  - PRISMA
