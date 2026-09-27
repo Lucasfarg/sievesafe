@@ -12,8 +12,10 @@ CONDITIONS = {
     "full": {"variant": "clef", "task": "intervention", "criteria": "objectives and selection criteria", "others": None},
     "objectives": {"variant": "clefobj", "task": "intervention", "criteria": "objectives only", "others": 300},
     "dta": {"variant": "clefdta", "task": "dta", "criteria": "objectives and selection criteria", "others": None},
+    "dta1718": {"variant": "clef1718", "task": "dta1718", "criteria": "objectives and selection criteria", "others": None, "keep": "final"},
 }
-TASKS = {"intervention": ("Intervention", "Intervention", DATA), "dta": ("DTA", "diagnostic test accuracy", DATA / "dta")}  # CLEF dir, label, data dir
+TASKS = {"intervention": ("Intervention", "Intervention", DATA), "dta": ("DTA", "diagnostic test accuracy", DATA / "dta"),
+         "dta1718": ("", "2017–2018 topics, mostly diagnostic test accuracy", DATA / "dta1718")}  # CLEF dir, label, data dir
 
 
 def data_dir(condition: str) -> Path:
@@ -33,7 +35,9 @@ def rows(topic: str, meta: dict, condition: str) -> list[dict]:
     """Records of one review under a condition, each with its weight back to the review's size."""
     with (data_dir(condition) / f"{topic}.csv").open(encoding="utf-8") as f:
         recs = list(csv.DictReader(f))
-    keep = [r for r in recs if r["y"] == "1" or r["ya"] == "1"]
-    others = [r for r in recs if not (r["y"] == "1" or r["ya"] == "1")][:CONDITIONS[condition]["others"]]
+    final_only = CONDITIONS[condition].get("keep") == "final"
+    kept = [r["y"] == "1" or (r["ya"] == "1" and not final_only) for r in recs]
+    keep = [r for r, k in zip(recs, kept) if k]
+    others = [r for r, k in zip(recs, kept) if not k][:CONDITIONS[condition]["others"]]
     weight = (meta["records_total"] - len(keep)) / len(others) if others else 1.0
     return [{**r, "w": 1.0} for r in keep] + [{**r, "w": weight} for r in others]

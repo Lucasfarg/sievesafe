@@ -54,3 +54,14 @@ SELECTION CRITERIA of each review's abstract, as for the first condition (`exter
 every include at either level plus 300 other records per review from the same kind of seeded sample
 (`clef_fetch.py --task dta --others 300`). Answers in `benchmark/answers/clefdta-*`; hard budget US$ 0.22. Same primary
 endpoints and the same verdict rule at 0.06: a failure if any review with a final include keeps less than 98% of them.
+
+## Fourth set: half of the CLEF TAR 2017–2018 topics (added before any call for this set)
+
+Question: does the result hold on more reviews, narrowing the upper bound on the share of reviews that lose an include?
+CLEF TAR 2017 (training and test) and 2018 Task 2 test topics: 80 Cochrane reviews, of which 79 are not in the sets
+above. A seeded random half is used: `random.Random(0).sample(sorted(topics), 40)` (`clef_fetch.py --task dta1718
+--topics 40 --keep final --others 200`). Criteria: OBJECTIVES and SELECTION CRITERIA of the latest version published up
+to the CLEF edition's year. Records: every final include plus 200 other records per review (a seeded sample, weighted);
+title/abstract labels are not kept whole here, so their recall is not reported. If the cost estimate exceeds US$ 0.55,
+the 200 is lowered to the largest multiple of 50 that fits, before any call. Answers in `benchmark/answers/clef1718-*`;
+hard budget US$ 0.60. Same primary endpoints and the same verdict rule at 0.06.
