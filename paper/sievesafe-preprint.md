@@ -4,7 +4,7 @@
 
 # A zero-shot, pre-registered safe threshold for automated exclusion in title/abstract screening: a benchmark on 23 held-out systematic reviews
 
-Lucas Farias, Independent researcher, Caruaru, Pernambuco, Brazil · lucasfg.dev@gmail.com · ORCID [[0000-0000-0000-0000]]
+Lucas Farias, Independent researcher, Caruaru, Pernambuco, Brazil · lucasfg.dev@gmail.com · ORCID 0009-0008-2666-766X (https://orcid.org/0009-0008-2666-766X)
 
 ## Abstract
 
