@@ -86,7 +86,10 @@ def ask(state: dict, key: str, timeout: float = 60, retries: int = 5) -> tuple[f
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 data = json.load(resp)
-            return data["answers"]["overall"]["noul"], data.get("usage", {}).get("input_tokens", 0)
+            try:
+                return float(data["answers"]["overall"]["noul"]), int(data.get("usage", {}).get("input_tokens", 0))
+            except (KeyError, TypeError, ValueError) as e:
+                raise JevError(f"unexpected answer from Jev: {str(data)[:200]}") from e
         except urllib.error.HTTPError as e:
             if (e.code == 429 or e.code >= 500) and attempt < retries:
                 time.sleep(float(e.headers.get("Retry-After") or 2 ** attempt))
@@ -102,18 +105,25 @@ def ask(state: dict, key: str, timeout: float = 60, retries: int = 5) -> tuple[f
 
 def score(records: list[Record], title: str, criteria: str, cache: Cache, key: str, budget: float, workers: int = 6,
           progress=lambda done, total: None) -> tuple[dict[int, float], float]:
-    """→ ({record index: probability}, spent USD). Stops sending once `budget` is spent; unscored records are left out."""
+    """→ ({record index: probability}, spent USD). A call is only sent if the spend so far, the estimated cost of the calls
+    in flight and its own estimated cost (estimate_tokens errs high) fit in `budget`; unscored records are left out."""
     review = {"title": title, "eligibility_criteria": criteria}
     scores = {r.index: s for r in records if (s := cache.get(r)) is not None}
     todo = [r for r in records if r.index not in scores]
-    spent, lock = 0.0, threading.Lock()
+    spent, reserved, lock = 0.0, 0.0, threading.Lock()
 
     def one(r: Record):
-        nonlocal spent
+        nonlocal spent, reserved
+        cost = estimate_tokens(title, criteria, [r]) * PRICE_PER_TOKEN
         with lock:
-            if spent >= budget:
+            if spent + reserved + cost > budget:
                 return None
-        p, tokens = ask({"review": review, "record": {"title": r.title, "abstract": r.abstract or "(no abstract available)"}}, key)
+            reserved += cost
+        try:
+            p, tokens = ask({"review": review, "record": {"title": r.title, "abstract": r.abstract or "(no abstract available)"}}, key)
+        finally:
+            with lock:
+                reserved -= cost
         cache.put(r, p)
         with lock:
             spent += tokens * PRICE_PER_TOKEN

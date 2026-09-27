@@ -133,6 +133,24 @@ class Serve(unittest.TestCase):
         for name in ("input.ris", ".sievesafe-cache.tsv", "..%2F..%2Fetc%2Fpasswd", "my_search.ris"):
             self.assertEqual(self.request("GET", f"/api/runs/{est['id']}/files/{name}")[0], 404, name)
 
+    def test_an_unexpected_failure_does_not_leave_the_server_stuck(self):
+        _, est = self.upload()
+        self.ask.side_effect = RuntimeError("boom")
+        job = self.finish(est["id"])
+        self.assertEqual(job["state"], "error")
+        self.ask.side_effect = fake_ask
+        _, again = self.upload()
+        self.assertEqual(self.finish(again["id"])["state"], "done")  # a new run can start
+
+    def test_negative_content_length_is_refused(self):
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=10)
+        conn.putrequest("POST", "/api/runs")
+        for k, v in {"Host": f"127.0.0.1:{self.port}", "X-Sievesafe-Token": self.server.token, "Content-Length": "-1"}.items():
+            conn.putheader(k, v)
+        conn.endheaders()
+        self.assertEqual(conn.getresponse().status, 400)
+        conn.close()
+
     def test_no_key_blocks_spending(self):
         _, est = self.upload()
         with mock.patch("sievesafe.jev.api_key", side_effect=jev.JevError("no key")):

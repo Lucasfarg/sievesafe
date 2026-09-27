@@ -37,10 +37,10 @@ def build(*, source: str, title: str, criteria: str, mode: str, n_total: int, n_
          f"the probability that it should proceed to full-text review given the review's eligibility criteria, without training "
          f"on labelled records. " + (f"Records with a probability below the pre-specified threshold of {SAFE_THRESHOLD} "
                                      f"({n_excluded} of {n_total}) were excluded by automation, except records without an abstract, "
-                                     f"which were always kept; all remaining records were "
-                                     f"screened by two independent reviewers." if mode == "exclude" else
-                                     "Records were presented to reviewers in descending order of probability; "
-                                     "all records were screened by two independent reviewers.")),
+                                     f"which were always kept. [Describe how the remaining records were screened, e.g. by two "
+                                     f"independent reviewers.]" if mode == "exclude" else
+                                     "Records were presented to reviewers in descending order of probability. [Describe how the "
+                                     "records were screened, e.g. by two independent reviewers.]")),
         "",
         "## Validation evidence",
         "",

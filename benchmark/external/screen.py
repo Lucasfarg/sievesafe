@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Ask Jev about every record of the CLEF TAR 2019 set built by clef_fetch.py (the only external step that spends).
 
-  screen.py [--condition full|objectives] [--budget USD]
+  screen.py [--condition full|objectives|dta|dta1718] [--budget USD]
 
 Same question, state and pinned model as `sievesafe screen`. Answers are appended to benchmark/answers/clef-<topic>.jsonl;
 --budget caps the total spend of all clef answers, committed ones included, and stops before a call could cross it."""

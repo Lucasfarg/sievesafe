@@ -1,3 +1,7 @@
+> **Note (2026-09-27):** research notes written before the final benchmark runs. Some figures here (for example tokens
+> per record and total cost) are superseded; the current numbers are in `benchmark/results.md` and
+> `benchmark/external/`.
+
 # Is the Jev zero-shot screening result strong against the 2023–2026 state of the art?
 
 Research date: 2026-09-27. Labels: **[M]** = measured by Lucas (from the brief, not re-run here); **[R]** = reported by the cited source; **[I]** = my inference or arithmetic.

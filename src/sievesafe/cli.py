@@ -1,4 +1,4 @@
-"""sievesafe — zero-shot title/abstract screening that only auto-excludes when it is safe to.
+"""sievesafe — zero-shot title/abstract screening that auto-excludes only below a pre-specified threshold.
 
   sievesafe screen <search.ris|.csv> --criteria criteria.txt --title "Review title" [options]
   sievesafe serve [--port 8765] [--dir sievesafe-results] [--max-budget 2.00]     the same in a local web page

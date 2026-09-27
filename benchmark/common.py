@@ -151,8 +151,8 @@ def wss(labels_in_order: list[int], n_total: int, n_inc: int, target: float) -> 
 
 
 def ranked(rows: list[dict], label_key: str = "y") -> list[int]:
-    """Labels in descending score order (ties keep file order)."""
-    return [r[label_key] for r in sorted(rows, key=lambda r: -r["s"])]
+    """Labels in descending score order; among equal scores the includes come last (the pessimistic reading order)."""
+    return [r[label_key] for r in sorted(rows, key=lambda r: (-r["s"], r[label_key]))]
 
 
 def cp_upper(k: int, n: int, alpha: float = 0.05) -> float:

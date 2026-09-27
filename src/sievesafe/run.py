@@ -77,7 +77,7 @@ def execute(run: Run, key: str, budget: float, progress=lambda done, total: None
     else:
         scores, spent = {r.index: run.cache.get(r) for r in reps}, 0.0
     scores = {r.index: scores[run.rep[r.index]] for r in recs if run.rep[r.index] in scores}
-    has_abstract = {r.index: bool(recs[run.rep[r.index]].abstract) for r in recs}
+    has_abstract = {r.index: bool(r.abstract) for r in recs}  # a copy without its own abstract is kept, whatever its twin's fate
     scored = [r for r in recs if r.index in scores]
     ordered = sorted(recs, key=lambda r: -scores.get(r.index, 1.0))  # unscored records go first: never hidden
     low = [r for r in scored if scores[r.index] < SAFE_THRESHOLD and has_abstract[r.index]]

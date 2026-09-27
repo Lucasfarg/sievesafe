@@ -138,6 +138,16 @@ class ScreenFormats(unittest.TestCase):
         self.assertEqual(ranked["Cooking habits of university students."], "excluded")
         self.assertEqual([r.title for r in records.read(out / "excluded.nbib")[1]], ["Cooking habits of university students."])
 
+    def test_a_copy_without_abstract_is_kept_when_its_twin_is_excluded(self, _key, ask):
+        d = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (d / "dup.ris").write_text("TY  - JOUR\nTI  - A survey of cooking habits at university\nAB  - Students cook.\nDO  - 10.9999/x\nER  - \n\n"
+                                   "TY  - JOUR\nTI  - A survey of cooking habits at university\nDO  - 10.9999/x\nER  - \n", encoding="utf-8")
+        (d / "criteria.txt").write_text(CRITERIA, encoding="utf-8")
+        cli.main(["screen", str(d / "dup.ris"), "--criteria", str(d / "criteria.txt"), "--title", "E", "--yes", "--mode", "exclude"])
+        out = d / "dup-sievesafe"
+        self.assertEqual(len(records.read(out / "excluded.ris")[1]), 1)
+        self.assertEqual([r.abstract for r in records.read(out / "to-screen.ris")[1]], [""])
+
     def test_latin1_semicolon_csv_end_to_end(self, _key, ask):
         out = self.screen("excel-semicolon-latin1.csv", "--mode", "exclude")
         data = (out / "to-screen.csv").read_bytes()

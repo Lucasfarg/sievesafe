@@ -1,10 +1,10 @@
 cff-version: 1.2.0
 message: "If you use sievesafe, please cite it as below."
 type: software
-title: "sievesafe: zero-shot title/abstract screening that only auto-excludes when it is safe to"
+title: "sievesafe: zero-shot title/abstract screening that auto-excludes only below a pre-specified threshold"
 abstract: >-
-  Title/abstract screening for systematic reviews with a zero-shot probabilistic model (TypeSafe Jev) and a safe
-  exclusion threshold frozen before evaluation, validated on SYNERGY+ and pre-registered on CLEF TAR.
+  Title/abstract screening for systematic reviews with a zero-shot probabilistic model (TypeSafe Jev) and a exclusion
+  threshold fixed before evaluation, developed on SYNERGY+ and tested with pre-specified plans on CLEF TAR.
 authors:
   - family-names: Farias
     given-names: Lucas

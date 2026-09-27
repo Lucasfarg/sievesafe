@@ -216,6 +216,19 @@ L += ["## 8. Cost and latency (test split)", "",
       (f"{len(f1_calls):,} calls (one per record), {tok / len(f1_calls):,.0f} input tokens per record, US$ {tok * common.PRICE_PER_TOKEN:.2f} in total "
        f"(US$ {tok * common.PRICE_PER_TOKEN / len(f1_calls):.6f} per record, at US$ 0.042 per million input tokens); median latency {ms[len(ms) // 2]} ms per call."), ""]
 
+def clef_sentence() -> str:
+    """The external validation in one sentence, from benchmark/external/summary-*.json (full criteria only)."""
+    S = [json.loads(f.read_text()) for f in sorted((common.HERE / "external").glob("summary-*.json"))]
+    S = [x for x in S if x["criteria"] == "objectives and selection criteria"]
+    if not S:
+        return ""
+    fails = [x for x in S if not x["passed"]]
+    return (f" In {len(S)} pre-specified external tests on {sum(x['reviews'] for x in S)} Cochrane reviews from CLEF TAR, the threshold kept "
+            f"{sum(x['includes_kept'] for x in S):,} of {sum(x['includes'] for x in S):,} finally included studies"
+            + (f"; {len(fails)} of the {len(S)} tests failed its pre-specified rule (at least 98% of the includes kept in every review), "
+               f"losing {sum(x['includes'] - x['includes_kept'] for x in fails)} study." if fails else ", and every test met its pre-specified rule."))
+
+
 # --- the README's headline block, so its numbers are generated too
 safe_rec, safe_exc = at(pooled_test, SAFE)
 lost_final = sum(r["y"] for v in abs_reviews.values() for r in v if r["ya"] and r["s"] < SAFE)
@@ -250,7 +263,7 @@ evidence = (f"On the SYNERGY+ benchmark (v3), with the threshold frozen on {len(
             f"decisions the threshold is stricter: it kept {pct(statistics.mean(ra))} of the records humans passed at that stage "
             f"(range {pct(ab_lo).rstrip('%')}–{pct(ab_hi)}, {len(abs_reviews)} reviews), and "
             + ("none of the records it lost was finally included." if lost_final == 0 else f"{lost_final} of the records it lost were finally included.")
-            + "\n")
+            + clef_sentence() + "\n")
 
 text = "\n".join(L)
 if "--check" in sys.argv:

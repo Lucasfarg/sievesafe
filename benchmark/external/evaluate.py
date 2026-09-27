@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """External validation on CLEF TAR 2019 (see PLAN.md): every number in external/results.md. No API calls.
 
-  evaluate.py [--condition full|objectives] [--check]     writes results.md (full) or results-<condition>.md
+  evaluate.py [--condition full|objectives|dta|dta1718] [--check]     writes results.md (full) or results-<condition>.md
 
 Thresholds come from benchmark/calibration.json (frozen on SYNERGY+) plus the corrected 100% one; nothing is tuned here.
 Product rule: a record without an abstract, or not found in PubMed, is never below the threshold. Sampled records are
@@ -57,7 +57,7 @@ def share_below(rows: list[dict], t: float) -> float:
 
 def wss(rows: list[dict], target: float) -> float:
     """Weighted WSS: reading in score order (unscored first), share of the review's records not read when `target` is found."""
-    order = sorted(rows, key=lambda r: -(r["s"] if r["s"] is not None else 2.0))
+    order = sorted(rows, key=lambda r: (-(r["s"] if r["s"] is not None else 2.0), r["y"]))  # ties: includes last (pessimistic)
     W, need, found, read = sum(r["w"] for r in rows), -(-target * sum(r["y"] for r in rows) // 1), 0, 0.0
     for r in order:
         found += r["y"]
@@ -84,7 +84,7 @@ L = [f"# External validation: CLEF TAR 2019 ({TASK_LABEL}, {N_REV} Cochrane revi
       if CONDITION == "full" else f"- CLEF TAR commit `{info['clef_commit'][:12]}`; every include plus up to {clef.CONDITIONS[CONDITION]['others'] or info['others']} "
       + ("other records per review (a subset of the full-criteria sample, weighted to the review's size)"
          if clef.CONDITIONS[CONDITION]["task"] == clef.CONDITIONS["full"]["task"] else "other records per review (a seeded sample, weighted to the review's size)")),
-     (f"- {sum(m['records_total'] for m in info['reviews'].values()):,} records in the {N_REV} reviews, {len(pooled):,} asked, {P} final includes "
+     (f"- {sum(m['records_total'] for m in info['reviews'].values()):,} records in the {N_REV} reviews, {len(pooled):,} in the sample, {P} final includes "
       + (f"({sum(r['ya'] for r in pooled)} title/abstract includes)" if ABS_OK else "(only final includes kept whole)")
       + f"; {len(with_inc)} reviews have at least one final include"),
      f"- Thresholds from SYNERGY+, not retuned: {', '.join(f'{t} ({n})' for t, n in THRESHOLDS)}",
@@ -105,7 +105,7 @@ summary = []
 for t, name in THRESHOLDS:
     recs = [recall(v, t) for v in with_inc.values()]
     summary.append([f"{t} ({name})", f"{sum(r == 1 for r in recs)}/{len(recs)}", f"{sum(r >= 0.98 for r in recs)}/{len(recs)}",
-                    f"{sum(r >= 0.95 for r in recs)}/{len(recs)}", pct1(min(recs)), pct1(recall(pooled, t)),
+                    f"{sum(r >= 0.95 for r in recs)}/{len(recs)}", f"{min(recs):.2%}", pct1(recall(pooled, t)),
                     pct(sum(r["w"] for r in pooled if below(r, t)) / sum(r["w"] for r in pooled)),
                     pct(statistics.mean(share_below(v, t) for v in reviews.values()))])
 L += ["| threshold | reviews keeping every include | reviews ≥98% | reviews ≥95% | lowest review | pooled recall | records below (pooled, weighted) | records below (mean per review) |",
@@ -115,7 +115,6 @@ L += [(f"**Pre-specified verdict: {'successful external validation' if ok else '
        f"{'every' if ok else 'not every'} review with an include kept at least 98% of its final includes at {SAFE}."), ""]
 
 lost = [(k, r) for k, v in with_inc.items() for r in v if r["y"] and below(r, SAFE)]
-titles = {(k, r["pmid"]): r["title"] for k, _ in lost for r in clef.rows(k, info["reviews"][k], CONDITION)}
 L += ["## Secondary", "",
       (f"- Score alone (no abstract rule) at {SAFE}: pooled recall {pct1(recall(pooled, SAFE, rule=False))}, "
        f"reviews keeping every include {sum(recall(v, SAFE, rule=False) == 1 for v in with_inc.values())}/{len(with_inc)}"),
@@ -124,8 +123,7 @@ L += ["## Secondary", "",
        if ABS_OK else "- Title/abstract includes: not measured (only final includes were kept whole in this set)"),
       (f"- Ranking (weighted): median WSS@95 {statistics.median(wss(v, 0.95) for v in with_inc.values()):.3f}, "
        f"median WSS@100 {statistics.median(wss(v, 1.0) for v in with_inc.values()):.3f}, median AUC {statistics.median(wauc(v) for v in with_inc.values()):.3f}"),
-      f"- Final includes below {SAFE}: {len(lost)}", *(f"  - {k} ({info['reviews'][k]['title']}): PMID {r['pmid']}, score {r['s']}, "
-                                                    f"titled \"{titles[(k, r['pmid'])]}\"" for k, r in lost), ""]
+      f"- Final includes below {SAFE}: {len(lost)}", *(f"  - {k} ({info['reviews'][k]['title']}): PMID {r['pmid']}, score {r['s']}" for k, r in lost), ""]
 if CONDITION != "full" and clef.CONDITIONS[CONDITION]["task"] == clef.CONDITIONS["full"]["task"]:
     base = {k: common.answers(clef.CONDITIONS["full"]["variant"], k) for k in reviews}
     pairs = [(base[k][r["pmid"]], r["s"], r) for k, v in reviews.items() for r in v if r["s"] is not None and r["pmid"] in base[k]]
@@ -145,13 +143,13 @@ fails = sum(recall(v, SAFE) < 1 for v in with_inc.values())
 summary = {"set": f"{TASK_LABEL} ({len(reviews)} reviews)", "criteria": clef.CONDITIONS[CONDITION]["criteria"], "reviews": len(reviews), "reviews_with_includes": len(with_inc),
            "reviews_keeping_all": len(with_inc) - fails, "includes": P, "includes_kept": sum(r["y"] for r in pooled if not below(r, SAFE)),
            "records_below": round(sum(r["w"] for r in pooled if below(r, SAFE)) / sum(r["w"] for r in pooled), 4),
-           "upper_bound_reviews_losing": round(common.cp_upper(fails, len(with_inc)), 4)}
+           "upper_bound_reviews_losing": round(common.cp_upper(fails, len(with_inc)), 4), "passed": ok}
 SUMMARY = HERE / f"summary-{CONDITION}.json"
 summaries = {c: json.loads((HERE / f"summary-{c}.json").read_text()) for c in clef.CONDITIONS if (HERE / f"summary-{c}.json").exists()}
 summaries[CONDITION] = summary
 S = [summaries[c] for c in clef.CONDITIONS if c in summaries]
 START, END = "<!-- external:start (generated by benchmark/external/evaluate.py) -->", "<!-- external:end -->"
-block = "\n".join([START, "", f"| CLEF TAR Cochrane reviews, pre-registered, threshold {SAFE} unchanged | "
+block = "\n".join([START, "", f"| CLEF TAR Cochrane reviews, pre-specified plans, threshold {SAFE} unchanged | "
                     + " | ".join(f"{s['set']}, criteria: {s['criteria']}" for s in S) + " |", "|:--|" + "--:|" * len(S),
                     "| reviews keeping every finally included study | " + " | ".join(f"{s['reviews_keeping_all']}/{s['reviews_with_includes']}" for s in S) + " |",
                     "| finally included studies kept | " + " | ".join(f"{s['includes_kept']} of {s['includes']}" for s in S) + " |",

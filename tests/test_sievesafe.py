@@ -1,6 +1,8 @@
 import csv
+import io
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -102,9 +104,10 @@ class Screen(unittest.TestCase):
             d = Path(d)
             with mock.patch("sievesafe.jev.cf.ThreadPoolExecutor") as pool:  # run serially so the budget check is deterministic
                 pool.return_value.__enter__.return_value.map = map
-                self.run_cli(d, "--mode", "exclude", "--budget", "0.00001")
+                self.run_cli(d, "--mode", "exclude", "--budget", "0.00004")
             out = d / "search-sievesafe"
-            self.assertEqual(ask.call_count, 1)  # 1000 tokens × $0.042/M = $0.000042 > budget after the first call
+            # the first call is estimated at ~700 tokens (fits) and costs 1000 × $0.042/M = $0.000042; nothing else fits after it
+            self.assertEqual(ask.call_count, 1)
             self.assertFalse(records.read_ris((out / "excluded.ris").read_text()))  # nothing unscored is ever excluded
             self.assertIn("not scored (budget) and kept", (out / "report.md").read_text())
 
@@ -116,6 +119,32 @@ class Screen(unittest.TestCase):
             with mock.patch("sys.stdin.isatty", return_value=False):
                 code = cli.main(["screen", str(d / "search.ris"), "--criteria", str(d / "criteria.txt"), "--title", "t"])
             self.assertEqual((code, ask.call_count), (1, 0))
+
+
+class Budget(unittest.TestCase):
+    def test_calls_in_flight_count_against_the_budget(self):
+        recs = [records.Record(f"title {i:02d}", "abstract", "", i) for i in range(20)]
+        tokens = jev.estimate_tokens("t", CRITERIA, recs[:1])
+
+        def slow_ask(state, key, **_):
+            time.sleep(0.02)  # keep several calls in flight at once
+            return 0.5, tokens  # each call costs exactly its estimate
+
+        with tempfile.TemporaryDirectory() as d, mock.patch("sievesafe.jev.ask", side_effect=slow_ask) as ask:
+            _, spent = jev.score(recs, "t", CRITERIA, jev.Cache(Path(d) / "c.tsv", CRITERIA), "k", budget=tokens * jev.PRICE_PER_TOKEN * 3.5)
+        self.assertEqual(ask.call_count, 3)  # six threads, but only three calls fit
+        self.assertLessEqual(spent, tokens * jev.PRICE_PER_TOKEN * 3.5)
+
+    def test_an_unexpected_answer_is_a_jev_error(self):
+        class Resp(io.BytesIO):
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        with mock.patch("urllib.request.urlopen", return_value=Resp(b'{"answers": {}}')), self.assertRaises(jev.JevError):
+            jev.ask({}, "k")
 
 
 class Estimate(unittest.TestCase):

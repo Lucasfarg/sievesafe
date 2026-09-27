@@ -15,7 +15,7 @@ by scripts, and none of their numbers is typed by hand.
 | `calibration.json` | the thresholds set on the calibration reviews, with the time and the SHA-256 of the answers used |
 | `data-manifest.json` | size, number of includes and a hash of the labels of every SYNERGY+ review used |
 | `results.md` | the SYNERGY+ tables: calibration, test split, leave-one-review-out, title/abstract labels, ASReview, stopping rules, stability, cost |
-| `external/PLAN.md` | the pre-registered plans for the CLEF TAR tests, each committed before its first model call |
+| `external/PLAN.md` | the pre-specified plans for the CLEF TAR tests, each committed before its first model call |
 | `external/results*.md` | the CLEF TAR results, one file per condition |
 
 The answer files hold OpenAlex or PubMed ids, probabilities and token counts, and no titles or abstracts. The records

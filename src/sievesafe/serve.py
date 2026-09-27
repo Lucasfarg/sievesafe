@@ -24,7 +24,7 @@ from pathlib import Path
 
 from sievesafe import MODEL, SAFE_THRESHOLD, __version__, jev, run
 
-MAX_UPLOAD = 60 * 1024 * 1024
+MAX_UPLOAD = 60 * 1024 * 1024  # the request body; the file arrives base64-encoded, so about 45 MB of export
 CONTENT_TYPES = {".csv": "text/csv", ".tsv": "text/tab-separated-values", ".ris": "application/x-research-info-systems",
                  ".txt": "text/plain", ".nbib": "text/plain", ".md": "text/markdown"}
 
@@ -108,9 +108,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         if not self.allowed(api=True):
             return
-        length = int(self.headers.get("Content-Length") or 0)
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if length < 0:
+            return self.json(400, {"error": "bad request length"})
         if length > MAX_UPLOAD:
-            return self.json(413, {"error": f"file too large (limit {MAX_UPLOAD // 2**20} MB)"})
+            return self.json(413, {"error": f"file too large (limit about {MAX_UPLOAD * 3 // 4 // 2**20} MB)"})
         try:
             body = json.loads(self.rfile.read(length) or b"{}")
         except ValueError:
@@ -182,6 +187,8 @@ def work(job: dict, key: str, budget: float) -> None:
         job["state"] = "done"
     except (jev.JevError, OSError, ValueError) as e:
         job["error"], job["state"] = str(e), "error"
+    except Exception as e:  # noqa: BLE001 — never leave a run stuck in "running": that would block every later run until a restart
+        job["error"], job["state"] = f"unexpected error: {e!r}", "error"
 
 
 def public(job: dict) -> dict:

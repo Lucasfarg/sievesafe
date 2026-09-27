@@ -22,7 +22,7 @@ data (see `benchmark/README.md`).
   `benchmark/external/evaluate.py`. Their `--check` option, which the tests run, fails if any of these files is out of
   date.
 - **The threshold stays put.** `SAFE_THRESHOLD` and `benchmark/calibration.json` only change with a new model version
-  or a new question, and then only after a new calibration and a new pre-registered test (`benchmark/external/PLAN.md`).
+  or a new question, and then only after a new calibration and a new pre-specified test (`benchmark/external/PLAN.md`).
 - **New evaluations are registered first.** Add the plan to `PLAN.md` and commit it before any record goes to the
   model, then report whatever verdict the plan gives, failures included.
 - **No record text in the repository.** Answer files keep identifiers and probabilities only, and the test fixtures are
