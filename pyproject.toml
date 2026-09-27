@@ -11,6 +11,10 @@ license = "AGPL-3.0-or-later"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/Lucasfarg/sievesafe"
+Issues = "https://github.com/Lucasfarg/sievesafe/issues"
+
 [project.scripts]
 sievesafe = "sievesafe.cli:main"
 

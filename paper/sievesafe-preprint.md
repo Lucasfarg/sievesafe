@@ -151,7 +151,7 @@ synthesis [6].
 
 ### Software and availability
 
-sievesafe [[repository URL]] reads RIS, PubMed/MEDLINE, Web of Science and CSV exports, writes the results back in the
+sievesafe (https://github.com/Lucasfarg/sievesafe) reads RIS, PubMed/MEDLINE, Web of Science and CSV exports, writes the results back in the
 same format, and produces a report with the count for the PRISMA 2020 flow diagram [1] and a draft methods paragraph.
 It never excludes records without an abstract, since the threshold was only validated on records that had one. The
 `benchmark/` directory holds the scripts, the model answers (identifiers and probabilities only, without record text),
@@ -323,7 +323,7 @@ for the model calls.
 
 SYNERGY+ v3: DataverseNL, doi:10.34894/DDCVCV (CC0 1.0). CLEF TAR: github.com/CLEF-TAR/tar (commit dbc13d0, MIT
 licence). The repository redistributes only record identifiers, model probabilities and token counts, not record text. Code, model answers,
-the frozen calibration and the generated tables: [[repository URL, release tag and archive DOI]], AGPL-3.0-or-later.
+the frozen calibration and the generated tables: https://github.com/Lucasfarg/sievesafe [[release tag and archive DOI]], AGPL-3.0-or-later.
 
 ## Competing interests
 

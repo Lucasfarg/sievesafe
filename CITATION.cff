@@ -12,6 +12,8 @@ authors:
     email: lucasfg.dev@gmail.com
     affiliation: "Independent researcher, Caruaru, Brazil"
 version: 0.1.0
+repository-code: "https://github.com/Lucasfarg/sievesafe"
+url: "https://github.com/Lucasfarg/sievesafe"
 license: AGPL-3.0-or-later
 keywords:
   - systematic review
