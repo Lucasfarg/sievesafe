@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sievesafe"
+dynamic = ["version"]
+description = "Zero-shot title/abstract screening for systematic reviews that only auto-excludes when it is safe to"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+sievesafe = "sievesafe.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "sievesafe.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 165
