@@ -24,7 +24,7 @@ p.add_argument("--condition", choices=list(clef.CONDITIONS), default="full")
 p.add_argument("--budget", type=float, default=0.95)
 a = p.parse_args()
 VARIANT = clef.CONDITIONS[a.condition]["variant"]
-reviews = clef.reviews()["reviews"]
+reviews = clef.reviews(a.condition)["reviews"]
 spent, lock = common.spent(VARIANT), threading.Lock()
 key = jev.api_key()
 MARGIN = 6 * 3000 * common.PRICE_PER_TOKEN

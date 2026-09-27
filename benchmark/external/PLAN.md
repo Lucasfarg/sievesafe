@@ -45,3 +45,12 @@ criteria? Same reviews and model; the criteria are the OBJECTIVES section alone 
 every record here was also scored with full criteria. Answers in `benchmark/answers/clefobj-*`; hard budget US$ 0.40
 (estimate US$ 0.28). Same primary endpoints and the same verdict rule at 0.06: a failure if any review with a final
 include keeps less than 98% of them. Also reported: the paired change against full criteria on the same records.
+
+## Third set: diagnostic test accuracy reviews (added before any call for this set)
+
+Question: does the safe threshold hold for another kind of review, diagnostic test accuracy (DTA), which is usually
+harder to screen? CLEF TAR 2019 Task 2 DTA test topics: 8 Cochrane reviews, 30,521 records. Criteria: OBJECTIVES and
+SELECTION CRITERIA of each review's abstract, as for the first condition (`external/clef.py`, condition `dta`). Records:
+every include at either level plus 300 other records per review from the same kind of seeded sample
+(`clef_fetch.py --task dta --others 300`). Answers in `benchmark/answers/clefdta-*`; hard budget US$ 0.22. Same primary
+endpoints and the same verdict rule at 0.06: a failure if any review with a final include keeps less than 98% of them.
