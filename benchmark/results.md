@@ -49,12 +49,12 @@ Recall = share of the finally included studies scoring at or above the threshold
 
 Median per review: AUC 0.966, WSS@95 0.763.
 
-| threshold | reviews with 100% recall | reviews with ≥98% recall | lowest review recall | pooled recall | auto-excluded (pooled) | auto-excluded (mean per review) |
-|:--|--:|--:|--:|--:|--:|--:|
-| 0.26 | 14/23 | 15/23 | 74% | 93.5% | 76% | 69% |
-| 0.17 | 17/23 | 18/23 | 83% | 98.3% | 66% | 58% |
-| 0.06 (safe, frozen) | 23/23 | 23/23 | 100% | 100.0% | 29% | 24% |
-| 0.08 (safe, corrected) | 22/23 | 23/23 | 99% | 99.8% | 41% | 34% |
+| threshold | reviews with 100% recall | reviews with ≥98% recall | reviews with ≥95% recall | lowest review recall | pooled recall | auto-excluded (pooled) | auto-excluded (mean per review) |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| 0.26 | 14/23 | 15/23 | 15/23 | 74% | 93.5% | 76% | 69% |
+| 0.17 | 17/23 | 18/23 | 19/23 | 83% | 98.3% | 66% | 58% |
+| 0.06 (safe, frozen) | 23/23 | 23/23 | 23/23 | 100% | 100.0% | 29% | 24% |
+| 0.08 (safe, corrected) | 22/23 | 23/23 | 23/23 | 99% | 99.8% | 41% | 34% |
 
 ## 3. Leave one review out (43 reviews)
 

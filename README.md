@@ -99,7 +99,7 @@ reference manager.
 ## Limits
 
 - **Title/abstract stage only.** It does not read full texts, and it is tuned to pass doubtful records on.
-- **Search results in English.** The benchmark's records are almost all in English; other languages are untested.
+- **English-language literature.** Most benchmark reviews restricted their searches to English; other languages are untested.
 - **A paid, closed model.** Each record costs a fraction of a cent, and each record's title and abstract, with your
   review title and criteria, are sent to TypeSafe's API. The model is proprietary; sievesafe pins the version
   (`jev-1.13.0`) the threshold was calibrated on. If that version is retired the threshold has to be recalibrated, and

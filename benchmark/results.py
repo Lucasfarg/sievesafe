@@ -104,11 +104,12 @@ table(["review", "records", "includes", "AUC", "WSS@95", *[f"t={t} ({k}) recall 
 per = {t: [at(v, t) for v in test.values()] for t in (*T.values(), SAFE_C)}
 L += [(f"Median per review: AUC {statistics.median(common.auc([r['s'] for r in v], [r['y'] for r in v]) for v in test.values()):.3f}, "
        f"WSS@95 {statistics.median(common.wss(common.ranked(v), len(v), sum(r['y'] for r in v), 0.95) for v in test.values()):.3f}."), ""]
-table(["threshold", "reviews with 100% recall", "reviews with ≥98% recall", "lowest review recall", "pooled recall", "auto-excluded (pooled)",
+table(["threshold", "reviews with 100% recall", "reviews with ≥98% recall", "reviews with ≥95% recall", "lowest review recall", "pooled recall",
+       "auto-excluded (pooled)",
        "auto-excluded (mean per review)"],
       [[f"{t}" + (" (safe, frozen)" if t == SAFE else " (safe, corrected)" if t == SAFE_C else ""), f"{sum(r == 1 for r, _ in per[t])}/{len(test)}",
-        f"{sum(r >= 0.98 for r, _ in per[t])}/{len(test)}", pct(min(r for r, _ in per[t])), pct1(at(pooled_test, t)[0]), pct(at(pooled_test, t)[1]),
-        pct(statistics.mean(e for _, e in per[t]))] for t in (*T.values(), SAFE_C)], "lrrrrrr")
+        f"{sum(r >= 0.98 for r, _ in per[t])}/{len(test)}", f"{sum(r >= 0.95 for r, _ in per[t])}/{len(test)}", pct(min(r for r, _ in per[t])), pct1(at(pooled_test, t)[0]), pct(at(pooled_test, t)[1]),
+        pct(statistics.mean(e for _, e in per[t]))] for t in (*T.values(), SAFE_C)], "lrrrrrrr")
 
 # --- leave one review out
 reviews = {**{k: v for k, v in train.items()}, **test}
