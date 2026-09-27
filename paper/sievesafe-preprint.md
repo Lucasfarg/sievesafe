@@ -19,7 +19,8 @@ the 23 reviews of the dataset's test split (33,001 records, 597 finally included
 the share of records below the threshold, leave-one-review-out stability over 43 reviews, agreement with human
 title/abstract decisions, a comparison with ASReview 3.0.8, and run-to-run stability. We then tested the threshold,
 unchanged and with a pre-registered plan, on 20 intervention and 8 diagnostic test accuracy Cochrane reviews from CLEF
-TAR 2019, with criteria taken from each review's abstract, and on the intervention reviews again with the objectives alone. Code, model answers and the frozen threshold are public.
+TAR 2019, with criteria taken from each review's abstract, on the intervention reviews again with the objectives alone,
+and on a random half (40) of the CLEF TAR 2017–2018 reviews. Code, model answers and the frozen threshold are public.
 
 **Results.** At the frozen threshold (0.06), no finally included study fell below it in any of the 23 test reviews, while
 29% of all records did (24% on average per review). Recalibrating with each of 43 reviews held out in turn, the
@@ -29,11 +30,14 @@ Against human title/abstract decisions (12 reviews), the threshold kept 96% of t
 (WSS@95) was 0.763, against 0.723 for ASReview with its default active-learning model and one labelled record of each
 class; at 100% recall, 0.808 against 0.711. Scores were stable between runs (correlation 0.996). Screening cost
 US$ 0.000047 per record. In the external validation no finally included study fell below the threshold in any of the 26
-reviews with includes (510 intervention and 250 diagnostic studies), with 52% and 45% of records below it; with the
-objectives alone, again none, with 34% below.
+CLEF 2019 reviews with includes (510 intervention and 250 diagnostic studies), with 52% and 45% of records below it;
+with the objectives alone, again none, with 34% below. In the CLEF 2017–2018 half, 848 of 849 included studies were
+kept (49% of records below); the one lost, in one review, is an off-topic record that appears to be a labelling error,
+but under the pre-registered rule this set failed.
 
 **Conclusions.** A threshold frozen before evaluation, on a zero-shot probability, transferred to unseen reviews and to
-another collection without losing an included study, and removed 29% to 52% of their records. Vaguer criteria made it
+another collection, losing one included study in 88 test reviews with includes (an apparent labelling error), and removed 29% to
+52% of their records. Vaguer criteria made it
 remove fewer records, not lose more studies. It is stricter than human title/abstract
 screening, not equivalent to it, and should be validated locally before use. We release it as an open-source tool,
 sievesafe.
@@ -127,7 +131,10 @@ from PubMed. Per review, every record included at either level was kept, plus a 
 1,000 records, weighted back to the review's size. A second condition, also registered before any call, gave the model
 the OBJECTIVES section alone, on every include plus the first 300 other records of the same sample, so that each record
 was scored under both conditions. A third set, registered before any call, applied the full criteria to the 8 diagnostic
-test accuracy (DTA) test topics of the same task (30,521 records), with every include plus 300 other records per review. As in the tool, records without an abstract were never counted below the threshold;
+test accuracy (DTA) test topics of the same task (30,521 records), with every include plus 300 other records per review.
+A fourth set, registered before any call, used a seeded random half (40) of the 79 CLEF TAR 2017–2018 topics not used
+above, with criteria from the latest review version published up to the CLEF edition's year, every final include plus
+200 other records per review; title/abstract labels were not kept whole there, so their recall is not reported. As in the tool, records without an abstract were never counted below the threshold;
 the scores alone gave the same recall.
 
 ### Software and availability
@@ -208,20 +215,25 @@ Sixty-three records (3.1%) crossed the safe threshold between runs, none of them
 **Table 4. CLEF TAR 2019 Cochrane reviews at the frozen threshold 0.06: 20 intervention reviews (18 with a final include,
 510 finally included studies) and 8 DTA reviews (250 finally included studies).**
 
-| | intervention, objectives and selection criteria | intervention, objectives only | DTA, objectives and selection criteria |
-|:--|--:|--:|--:|
-| reviews keeping every final include | 18/18 | 18/18 | 8/8 |
-| records below the threshold (pooled, weighted) | 52% | 34% | 45% |
-| records below the threshold (mean per review) | 42% | 19% | 30% |
-| title/abstract includes kept (pooled; lowest review) | 99.7%; 96% | 100.0%; 100% | 99.1%; 94% |
-| median WSS@95 / WSS@100 (weighted) | 0.889 / 0.936 | 0.861 / 0.904 | 0.733 / 0.660 |
-| 95% upper bound on reviews losing any include | 15% | 15% | 31% |
+| | 2019 intervention, objectives and selection criteria | 2019 intervention, objectives only | 2019 DTA, objectives and selection criteria | 2017–2018 half, objectives and selection criteria |
+|:--|--:|--:|--:|--:|
+| reviews keeping every final include | 18/18 | 18/18 | 8/8 | 38/39 |
+| final includes kept | 510 of 510 | 510 of 510 | 250 of 250 | 848 of 849 |
+| records below the threshold (pooled, weighted) | 52% | 34% | 45% | 49% |
+| records below the threshold (mean per review) | 42% | 19% | 30% | 33% |
+| title/abstract includes kept (pooled; lowest review) | 99.7%; 96% | 100.0%; 100% | 99.1%; 94% | not measured |
+| median WSS@95 / WSS@100 (weighted) | 0.889 / 0.936 | 0.861 / 0.904 | 0.733 / 0.660 | 0.886 / 0.934 |
+| 95% upper bound on reviews losing any include | 15% | 15% | 31% | 12% |
 
-All three met the pre-registered rule. With full criteria, the corrected SYNERGY+ threshold (0.08) would have lost
+The three CLEF 2019 sets met the pre-registered rule; the 2017–2018 half did not. In that set one review, *Blood CEA
+levels for detecting recurrent colorectal cancer* (CD011134), kept 48 of its 49 final includes (98.0% rounded; 97.96%,
+below the 98% floor). The record lost (PMID 16649724, score 0.02) is a study of NT-proBNP in hypertrophic
+cardiomyopathy, which appears to be a wrong identifier in the CLEF labels; we did not check it against the review's
+reference list, and we report the set as a failure, as planned. With full criteria, the corrected SYNERGY+ threshold (0.08) would have lost
 included studies in 2 of 18 reviews (lowest 97%). On the 6,237 records scored under both conditions, the scores
 correlated at 0.874; with the objectives alone the mean score rose from 0.208 to 0.286 and the share of records below
-0.06 fell from 38% to 18% (unweighted), and no final include moved from above the threshold to below it. The three
-cost US$ 0.595 (13,637 requests), US$ 0.244 (6,237 requests) and US$ 0.114 (2,626 requests). The DTA reviews ranked less
+0.06 fell from 38% to 18% (unweighted), and no final include moved from above the threshold to below it. The four
+cost US$ 0.595 (13,637 requests), US$ 0.244 (6,237 requests), US$ 0.114 (2,626 requests) and US$ 0.365 (8,738 requests). The DTA reviews ranked less
 well than the intervention reviews (median AUC 0.937 against 0.984), but the safe threshold still kept every include.
 
 ## Discussion
@@ -246,8 +258,9 @@ Better criteria buy more work saved, not more safety.
 
 ## Limitations
 
-- **Two collections.** 23 SYNERGY+ test reviews and 26 CLEF TAR reviews with includes; per set, the 95% upper bound on
-  the share of reviews losing an include is still 15% (18 intervention reviews) and 31% (8 DTA reviews). The criteria came from published reviews;
+- **Two collections, one failure.** 23 SYNERGY+ test reviews and 65 CLEF TAR reviews with includes; one CLEF review lost
+  one include, apparently through a labelling error. Per set, the 95% upper bound on the share of reviews losing an
+  include is 12% to 31%; only half of the CLEF 2017–2018 topics were used. The criteria came from published reviews;
   the objectives-only condition is one test of vaguer criteria, and a prospective review is still needed.
 - **Sampling in the external validation.** Non-included records were sampled and weighted, so the shares of records
   below the threshold there are estimates; recall is exact, since every include was scored.
