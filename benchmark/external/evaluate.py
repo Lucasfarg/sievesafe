@@ -120,7 +120,7 @@ L += ["## Secondary", "",
       (f"- Ranking (weighted): median WSS@95 {statistics.median(wss(v, 0.95) for v in with_inc.values()):.3f}, "
        f"median WSS@100 {statistics.median(wss(v, 1.0) for v in with_inc.values()):.3f}, median AUC {statistics.median(wauc(v) for v in with_inc.values()):.3f}"),
       f"- Final includes below {SAFE}: {len(lost)}" + ("" if not lost else " — " + ", ".join(f"{k} PMID {r['pmid']} (score {r['s']})" for k, r in lost)), ""]
-if CONDITION != "full":
+if CONDITION != "full" and clef.CONDITIONS[CONDITION]["task"] == clef.CONDITIONS["full"]["task"]:
     base = {k: common.answers(clef.CONDITIONS["full"]["variant"], k) for k in reviews}
     pairs = [(base[k][r["pmid"]], r["s"], r) for k, v in reviews.items() for r in v if r["s"] is not None and r["pmid"] in base[k]]
     a_, b_ = [x for x, _, _ in pairs], [y for _, y, _ in pairs]

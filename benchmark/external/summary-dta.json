@@ -1,0 +1,11 @@
+{
+ "set": "diagnostic test accuracy (8 reviews)",
+ "criteria": "objectives and selection criteria",
+ "reviews": 8,
+ "reviews_with_includes": 8,
+ "reviews_keeping_all": 8,
+ "includes": 250,
+ "includes_kept": 250,
+ "records_below": 0.4475,
+ "upper_bound_reviews_losing": 0.3123
+}
