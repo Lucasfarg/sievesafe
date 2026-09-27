@@ -1,6 +1,6 @@
 <!-- Draft for medRxiv. Every number comes from benchmark/results.md in the sievesafe repository (external validation: benchmark/external/results*.md).
-     [[…]] marks what the author must fill or check before submission. References marked [verify] were collected in
-     the research notes but not re-read for this draft. -->
+     [[…]] marks what the author must fill before submission. References were checked against their sources on
+     2026-09-27. -->
 
 # A zero-shot, pre-registered safe threshold for automated exclusion in title/abstract screening: a benchmark on 23 held-out systematic reviews
 
@@ -51,12 +51,11 @@ matter. The joint position statement of Cochrane, the Campbell Collaboration, JB
 Evidence, which endorses the RAISE recommendations, allows AI in evidence synthesis only when authors can show it does
 not compromise methodological rigour, with human oversight and full reporting of tool, version, validation and
 limitations [5, 6]. In practice the bar for automated exclusion has been set per review, not on average: Covidence
-describes a floor of 98% recall in every review [7] [verify], and its own attempt at a general automated-exclusion
-classifier did not meet it [7] [verify].
+set a minimum recall of 98% and withheld a classifier whose recall averaged 98.6% but fell as low as 65.7% in individual
+reviews [7].
 
 Language models can now screen from the eligibility criteria alone, without labelled examples, and a growing literature
-reports their sensitivity and specificity [[short citation list from research notes, e.g. LGAR (Jaumann et al., ACL
-Findings 2025), Sanghera et al. JAMIA 2025, Oami et al. 2025]] [verify]. Two things are usually missing for automated
+reports their sensitivity and specificity [10, 12, 13]. Two things are usually missing for automated
 exclusion: a threshold fixed before the evaluation data are seen, and evidence that it holds review by review rather
 than pooled. This study provides both for one model, on a public benchmark, with everything needed to reproduce it.
 
@@ -132,7 +131,7 @@ from PubMed. Per review, every record included at either level was kept, plus a 
 the OBJECTIVES section alone, on every include plus the first 300 other records of the same sample, so that each record
 was scored under both conditions. A third set, registered before any call, applied the full criteria to the 8 diagnostic
 test accuracy (DTA) test topics of the same task (30,521 records), with every include plus 300 other records per review.
-A fourth set, registered before any call, used a seeded random half (40) of the 79 CLEF TAR 2017–2018 topics not used
+A fourth set, registered before any call, used a seeded random half (40) of the 79 CLEF TAR 2017–2018 [14, 15] topics not used
 above, with criteria from the latest review version published up to the CLEF edition's year, every final include plus
 200 other records per review; title/abstract labels were not kept whole there, so their recall is not reported. As in the tool, records without an abstract were never counted below the threshold;
 the scores alone gave the same recall.
@@ -249,7 +248,8 @@ text. Its claim is narrower: records it removes are unlikely to contain studies 
 
 As a ranking without any labels, the model matched or exceeded an active-learning baseline that starts with two
 labelled records, in most reviews. Published zero-shot results on the original SYNERGY reviews (e.g. LGAR, mean WSS@95
-0.652 [[verify; different review set and aggregation]]) are not directly comparable to ours.
+0.652, macro-averaged over the 26 original SYNERGY reviews [10]) are not directly comparable to ours: the review set and
+the aggregation differ.
 
 The external validation matters more than the SYNERGY+ test split, because the reviews, the criteria text and the
 records came from another source, and the success rule was fixed in advance. It also shows how the threshold degrades
@@ -283,22 +283,27 @@ URL, release tag and archive DOI]], AGPL-3.0-or-later.
 
 ## Competing interests
 
-[[Author to declare any relationship with TypeSafe or other vendors.]]
+The author declares no competing interests and has no relationship with TypeSafe; the model was used through its
+public, paid API.
 
 ## Funding
 
-[[None / source.]]
+This work received no specific funding.
 
 ## References
 
 1. Page MJ, McKenzie JE, Bossuyt PM, et al. The PRISMA 2020 statement: an updated guideline for reporting systematic reviews. BMJ 2021;372:n71.
 2. van de Schoot R, de Bruin J, Schram R, et al. An open source machine learning framework for efficient and transparent systematic reviews. Nat Mach Intell 2021;3:125–133.
-3. SYNERGY+ dataset, version 3. DataverseNL. doi:10.34894/DDCVCV. [[author list to verify]]
+3. Westerbeek E, van der Kuil T, de Bruin J, Neeleman R, van de Schoot R. SYNERGY+, version 3.0. DataverseNL, 2026. doi:10.34894/DDCVCV.
 4. Cohen AM, Hersh WR, Peterson K, Yen PY. Reducing workload in systematic review preparation using automated citation classification. J Am Med Inform Assoc 2006;13(2):206–219.
-5. Joint position statement on the use of AI in evidence synthesis (Cochrane, Campbell Collaboration, JBI, CEE), 2025. https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.ED000178/full [verify]
-6. RAISE: Responsible use of AI in evidence SynthEsis recommendations. https://pmc.ncbi.nlm.nih.gov/articles/PMC12603384/ [verify]
-7. Covidence. Beyond evaluation: deciding when AI is appropriate in evidence synthesis. https://www.covidence.org/blog/beyond-evaluation-deciding-when-ai-is-appropriate-in-evidence-synthesis/ [verify]
+5. Flemyng E, Noel-Storr A, Macura B, et al. Position statement on artificial intelligence (AI) use in evidence synthesis across Cochrane, the Campbell Collaboration, JBI and the Collaboration for Environmental Evidence 2025. Campbell Syst Rev 2025;21(4):e70074. doi:10.1002/cl2.70074 (also published in the Cochrane Database of Systematic Reviews, ED000178, and Environmental Evidence).
+6. Thomas J, Flemyng E, Noel-Storr A, et al. Responsible use of AI in evidence SynthEsis (RAISE): recommendations and guidance. Open Science Framework. doi:10.17605/OSF.IO/FWAUD.
+7. Covidence. Beyond evaluation: deciding when AI is appropriate in evidence synthesis. n.d. https://www.covidence.org/blog/beyond-evaluation-deciding-when-ai-is-appropriate-in-evidence-synthesis/ (accessed 27 September 2026).
 8. Cormack GV, Grossman MR. Engineering quality and reliability in technology-assisted review. Proc SIGIR 2016:75–84.
 9. Clopper CJ, Pearson ES. The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika 1934;26(4):404–413.
-10. Jaumann et al. LGAR. Findings of ACL 2025. https://aclanthology.org/2025.findings-acl.412/ [verify]
-11. Kanoulas E, Li D, Azzopardi L, Spijker R. CLEF 2019 Technology Assisted Reviews in Empirical Medicine overview. CEUR Workshop Proceedings, 2019. [verify]
+10. Jaumann C, Wiedholz A, Friedrich A. LGAR: zero-shot LLM-guided neural ranking for abstract screening in systematic literature reviews. In: Findings of the Association for Computational Linguistics: ACL 2025, pp. 7910–7927.
+11. Kanoulas E, Li D, Azzopardi L, Spijker R. CLEF 2019 technology assisted reviews in empirical medicine overview. CEUR Workshop Proceedings 2019;2380.
+12. Sanghera R, Thirunavukarasu AJ, et al. High-performance automated abstract screening with large language model ensembles. J Am Med Inform Assoc 2025;32(5):893–904. doi:10.1093/jamia/ocaf050.
+13. Oami T, Okada Y, Nakada TA, et al. Optimal large language models to screen citations for systematic reviews. Res Synth Methods 2025;16(6):859–875. doi:10.1017/rsm.2025.10014.
+14. Kanoulas E, Li D, Azzopardi L, Spijker R. CLEF 2017 technologically assisted reviews in empirical medicine overview. CEUR Workshop Proceedings 2017;1866.
+15. Kanoulas E, Li D, Azzopardi L, Spijker R. CLEF 2018 technologically assisted reviews in empirical medicine overview. CEUR Workshop Proceedings 2018;2125.
