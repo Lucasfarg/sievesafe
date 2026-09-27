@@ -1,0 +1,10 @@
+{
+ "criteria": "objectives only",
+ "reviews": 20,
+ "reviews_with_includes": 18,
+ "reviews_keeping_all": 18,
+ "includes": 510,
+ "includes_kept": 510,
+ "records_below": 0.3407,
+ "upper_bound_reviews_losing": 0.1533
+}
