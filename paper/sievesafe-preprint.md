@@ -1,4 +1,4 @@
-<!-- Draft for medRxiv. Every number comes from benchmark/results.md in the sievesafe repository (commit 3bb53da).
+<!-- Draft for medRxiv. Every number comes from benchmark/results.md in the sievesafe repository (external validation: benchmark/external/results*.md).
      [[…]] marks what the author must fill or check before submission. References marked [verify] were collected in
      the research notes but not re-read for this draft. -->
 
@@ -17,8 +17,9 @@ whether it should proceed to full-text review, given the review's title and publ
 labelled examples. We froze an exclusion threshold on 20 reviews from the SYNERGY+ v3 dataset and applied it unchanged to
 the 23 reviews of the dataset's test split (33,001 records, 597 finally included studies). We report per-review recall,
 the share of records below the threshold, leave-one-review-out stability over 43 reviews, agreement with human
-title/abstract decisions, a comparison with ASReview 3.0.8, and run-to-run stability. Code, model answers and the
-frozen threshold are public.
+title/abstract decisions, a comparison with ASReview 3.0.8, and run-to-run stability. We then tested the threshold,
+unchanged and with a pre-registered plan, on 20 Cochrane reviews from CLEF TAR 2019, with criteria taken from each
+review's abstract, and again with the review's objectives alone. Code, model answers and the frozen threshold are public.
 
 **Results.** At the frozen threshold (0.06), no finally included study fell below it in any of the 23 test reviews, while
 29% of all records did (24% on average per review). Recalibrating with each of 43 reviews held out in turn, the
@@ -27,10 +28,12 @@ Against human title/abstract decisions (12 reviews), the threshold kept 96% of t
 (lowest 78%); none of the records it lost was finally included. As a ranking, the median work saved at 95% recall
 (WSS@95) was 0.763, against 0.723 for ASReview with its default active-learning model and one labelled record of each
 class; at 100% recall, 0.808 against 0.711. Scores were stable between runs (correlation 0.996). Screening cost
-US$ 0.000047 per record.
+US$ 0.000047 per record. In the external validation no finally included study fell below the threshold in any of the 18
+reviews with includes (510 studies), with 52% of records below it; with the objectives alone, again none, with 34% below.
 
-**Conclusions.** A threshold frozen before evaluation, on a zero-shot probability, transferred to unseen reviews without
-losing an included study, and removed 29% of their records. It is stricter than human title/abstract
+**Conclusions.** A threshold frozen before evaluation, on a zero-shot probability, transferred to unseen reviews and to
+another collection without losing an included study, and removed 29% to 52% of their records. Vaguer criteria made it
+remove fewer records, not lose more studies. It is stricter than human title/abstract
 screening, not equivalent to it, and should be validated locally before use. We release it as an open-source tool,
 sievesafe.
 
@@ -112,6 +115,19 @@ read, slope ratio ≥ 6, 10% margin) applied to the same ranking.
 *Stability.* 2,000 test records drawn at random were asked again with the model version pinned, and we counted records
 whose score crossed each threshold.
 
+### External validation (pre-registered)
+
+After the SYNERGY+ results, we tested the frozen thresholds on CLEF TAR 2019 Task 2 [11], Intervention test topics: 20
+Cochrane reviews, 41,996 records, with final (content-level) and title/abstract (abstract-level) labels. The plan,
+including the success rule (every review with a final include keeps at least 98% of them at 0.06; no retuning), was
+committed before any record was sent to the model (`benchmark/external/PLAN.md`). Criteria were the OBJECTIVES and
+SELECTION CRITERIA sections of each review's abstract (latest version published up to 2019), and records were retrieved
+from PubMed. Per review, every record included at either level was kept, plus a seeded random sample of the others up to
+1,000 records, weighted back to the review's size. A second condition, also registered before any call, gave the model
+the OBJECTIVES section alone, on every include plus the first 300 other records of the same sample, so that each record
+was scored under both conditions. As in the tool, records without an abstract were never counted below the threshold;
+the scores alone gave the same recall.
+
 ### Software and availability
 
 sievesafe [[repository URL]] reads RIS, PubMed/MEDLINE, Web of Science and CSV exports, writes results back in the same
@@ -185,6 +201,26 @@ Sixty-three records (3.1%) crossed the safe threshold between runs, none of them
 33,001 requests, 1,117 input tokens per record on average, US$ 1.55 in total (US$ 0.000047 per record) and a median of
 410 ms per request.
 
+### External validation
+
+**Table 4. CLEF TAR 2019, 20 Cochrane reviews (18 with at least one final include, 510 finally included studies), frozen
+threshold 0.06.**
+
+| | objectives and selection criteria | objectives only |
+|:--|--:|--:|
+| reviews keeping every final include | 18/18 | 18/18 |
+| records below the threshold (pooled, weighted) | 52% | 34% |
+| records below the threshold (mean per review) | 42% | 19% |
+| title/abstract includes kept (pooled; lowest review) | 99.7%; 96% | 100.0%; 100% |
+| median WSS@95 / WSS@100 (weighted) | 0.889 / 0.936 | 0.861 / 0.904 |
+| 95% upper bound on reviews losing any include | 15% | 15% |
+
+Both conditions met the pre-registered rule. With full criteria, the corrected SYNERGY+ threshold (0.08) would have lost
+included studies in 2 of 18 reviews (lowest 97%). On the 6,237 records scored under both conditions, the scores
+correlated at 0.874; with the objectives alone the mean score rose from 0.208 to 0.286 and the share of records below
+0.06 fell from 38% to 18% (unweighted), and no final include moved from above the threshold to below it. The two
+conditions cost US$ 0.595 (13,637 requests) and US$ 0.244 (6,237 requests).
+
 ## Discussion
 
 A threshold on a zero-shot probability, frozen on 20 reviews, removed 29% of the records of 23 unseen reviews without
@@ -200,10 +236,18 @@ As a ranking without any labels, the model matched or exceeded an active-learnin
 labelled records, in most reviews. Published zero-shot results on the original SYNERGY reviews (e.g. LGAR, mean WSS@95
 0.652 [[verify; different review set and aggregation]]) are not directly comparable to ours.
 
+The external validation matters more than the SYNERGY+ test split, because the reviews, the criteria text and the
+records came from another source, and the success rule was fixed in advance. It also shows how the threshold degrades
+when criteria are vague: the model becomes more permissive, so fewer records are removed, rather than losing studies.
+Better criteria buy more work saved, not more safety.
+
 ## Limitations
 
-- **One benchmark.** 23 test reviews, with the dataset's own eligibility criteria text, which may be more complete than
-  criteria written during a new review. External validation on other collections and a prospective review are needed.
+- **Two collections.** 23 SYNERGY+ test reviews and 18 CLEF TAR reviews with includes; with no failure in 18 reviews
+  the 95% upper bound on the share of reviews losing an include is still 15%. The criteria came from published reviews;
+  the objectives-only condition is one test of vaguer criteria, and a prospective review is still needed.
+- **Sampling in the external validation.** Non-included records were sampled and weighted, so the shares of records
+  below the threshold there are estimates; recall is exact, since every include was scored.
 - **Pre-specification.** The thresholds were frozen before the test answers were compared with labels, but the
   calibration script had the flaw described above; the corrected procedure would have lost one included study.
 - **Leave-one-review-out** lost one included study in one of 43 reviews at the 100% target; the upper bound on the share
@@ -218,7 +262,7 @@ labelled records, in most reviews. Published zero-shot results on the original S
 
 ## Data and code availability
 
-SYNERGY+ v3: DataverseNL, doi:10.34894/DDCVCV. Code, model answers, frozen calibration and generated tables: [[repository
+SYNERGY+ v3: DataverseNL, doi:10.34894/DDCVCV. CLEF TAR 2019: github.com/CLEF-TAR/tar (commit dbc13d0). Code, model answers, frozen calibration and generated tables: [[repository
 URL, release tag and archive DOI]], AGPL-3.0-or-later.
 
 ## Competing interests
@@ -241,3 +285,4 @@ URL, release tag and archive DOI]], AGPL-3.0-or-later.
 8. Cormack GV, Grossman MR. Engineering quality and reliability in technology-assisted review. Proc SIGIR 2016:75–84.
 9. Clopper CJ, Pearson ES. The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika 1934;26(4):404–413.
 10. Jaumann et al. LGAR. Findings of ACL 2025. https://aclanthology.org/2025.findings-acl.412/ [verify]
+11. Kanoulas E, Li D, Azzopardi L, Spijker R. CLEF 2019 Technology Assisted Reviews in Empirical Medicine overview. CEUR Workshop Proceedings, 2019. [verify]
